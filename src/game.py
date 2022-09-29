@@ -8,14 +8,15 @@ screen = pygame.display.set_mode((800,600))
 
 #Title and Icon
 pygame.display.set_caption("BeatDrop")
-icon = pygame.image.load('gameicon.png')
+icon = pygame.image.load('assets/gameicon.png')
 pygame.display.set_icon(icon)
 
 #Default Game Loop
-running = True
-while running:
+RUNNING = True
+while RUNNING:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            RUNNING = False
     screen.fill((75, 0, 130))
     pygame.display.update()
+    
