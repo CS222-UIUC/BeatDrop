@@ -38,16 +38,17 @@ def test_get_current_time():
     assert visualizer.get_current_time(start_ticks)  - wait_time < 0.01
 
 def test_next_beat():
-    # note: this test may be a little iffy since times are not exact.
+    # note: because run speeds vary with processor, this test gives room for
+    # slight amounts of error
     beat_idx = 0
-    beat_times = [0.011]
+    beat_times = [0.012]
     start_ticks = pygame.time.get_ticks()
 
     pygame.time.wait(10)
     print("44", visualizer.get_current_time(start_ticks))
     assert visualizer.next_beat(beat_idx, beat_times, start_ticks) == False
 
-    pygame.time.wait(1)
+    pygame.time.wait(3)
     print("48", visualizer.get_current_time(start_ticks))
     assert visualizer.next_beat(beat_idx, beat_times, start_ticks) == True
 
