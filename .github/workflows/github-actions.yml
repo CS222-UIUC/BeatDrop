@@ -13,6 +13,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pytest pylint numpy pygame librosa pandas pytest-cov soundfile
+          sudo apt-get install libsndfile1-dev
       - name: Lint with pylint
         run: |
           pylint ./src
