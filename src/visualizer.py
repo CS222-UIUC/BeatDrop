@@ -17,6 +17,12 @@ def play_music(filename, volume):
         filename (string): Path to audio file to identify beats from.
         volume (float): Volume level, between 0 and 1 inclusive.
     """
+    # check volume within [0,1]"
+    if volume < 0 or volume > 1:
+        raise ValueError("{volume} is invalid volume level. Must be between 0"
+            "and 1, inclusive.")
+
+    # play music
     mixer.init()
     mixer.music.load(filename)
     mixer.music.set_volume(volume)
@@ -35,7 +41,13 @@ def prepare_audio(sample_idx, volume=1):
     """
     directory = "assets/sample_audio_files/"
     sample_audio_files = ["break_free.ogg", "tick.wav"]
+
+    # check volume within [0,1]"
+    if sample_idx < 0 or sample_idx > len(sample_audio_files):
+        raise ValueError("{sample_idx} is invalid sample audio index.")
+
     filename = directory + sample_audio_files[sample_idx]
+
     tempo, beat_times = audio_analysis.get_beat_info(filename)
     play_music(filename, volume)
     return tempo, beat_times
