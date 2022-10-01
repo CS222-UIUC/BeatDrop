@@ -86,6 +86,7 @@ def draw_random_color_rect(screen, size):
         screen (_type_): Surface to draw on.
         size (int): Width/Length of the rectangle.
     """
+    # pylint: disable=I1101
     rand_color = color.Color(randint(0, 255), randint(0, 255), randint(0, 255))
     draw.rect(screen, rand_color, Rect(0,0,size,size))
     display.flip()
