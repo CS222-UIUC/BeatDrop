@@ -36,11 +36,11 @@ def main():
 
     clock = pygame.time.Clock()
 
-    while True:
-        event = pygame.event.get()
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
         group.update()
         screen.fill(BACKGROUND_COLOR)
         group.draw(screen)
