@@ -4,8 +4,8 @@ import sys
 
 sys.path.insert(1, '..//course-project-group-84//src')
 
-from src.character import DinoSprite
-from src.character import main
+from character import DinoSprite
+
 
 @pytest.fixture
 def test_init():
@@ -17,5 +17,5 @@ def test_update():
     dino = DinoSprite()
     dino.update()
     assert dino.index == 1
-    # dino.update()
-    # assert dino.index == 0
+    dino.update()
+    assert dino.index == 0
