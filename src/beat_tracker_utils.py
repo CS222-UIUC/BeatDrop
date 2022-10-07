@@ -54,11 +54,12 @@ def visualization_plot(y, sr):
     plt.show()
     return fig
 
-y, sr = librosa.load('./assets/example_music.wav')
-fig = visualization_plot(y, sr)
-beat_times = beat_timestamps(y, sr)
-print(beat_times)
-times, onset_env = onset_strength_timestamps(y, sr)
-print(times)
-print(onset_env)
-# plt.show()
+
+# y, sr = librosa.load('./assets/sample_audio_files/break_free.ogg')
+# fig = visualization_plot(y, sr)
+# beat_times = beat_timestamps(y, sr)
+# print(beat_times)
+# times, onset_env = onset_strength_timestamps(y, sr)
+# print(times)
+# print(onset_env)
+# # plt.show()

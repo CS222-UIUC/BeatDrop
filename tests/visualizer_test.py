@@ -25,6 +25,14 @@ def test_play_music_volume(sample_audio_filename):
         visualizer.play_music(sample_audio_filename, 1.1)
 
 def test_prepare_audio():
+    # this test case cannot be properly run on Github actions because it
+    # requires an audio device. thus, it is commented out for merging.
+    actual = visualizer.prepare_audio(2)
+    pygame.mixer.music.stop()
+    for i in range(len(actual) - 1):
+        assert actual[i] < actual[i+1]
+
+def test_prepare_audio_illegal_arguments():
     with pytest.raises(Exception):
         visualizer.prepare_audio(-1)
     with pytest.raises(Exception):
@@ -54,3 +62,19 @@ def test_next_beat():
 
     beat_idx += 1
     assert visualizer.next_beat(1, beat_times, start_ticks) == False
+
+# def test_draw_random_color_rect():
+#     screen = pygame.display.set_mode((640, 480))
+#     visualizer.draw_random_color_rect(screen, size=20)
+
+def test_main_loop():
+    screen = pygame.display.set_mode((640, 480))
+    beat_times = [0.01, 0.02] # dummy array since we aren't testing next_beat here
+
+    pygame.mixer.init()
+    start_ticks = pygame.time.get_ticks()
+    visualizer.main_loop(screen, beat_times)
+
+    expected_time = 1
+    actual_time = visualizer.get_current_time(start_ticks)
+    assert actual_time - expected_time < 0.01
