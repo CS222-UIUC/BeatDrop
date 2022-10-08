@@ -67,12 +67,13 @@ def initialize():
             screen.blit(cloud.cloud, (cloud.cloud_x, cloud.cloud_y))
 
         #Change Cloud X Position and Check if Cloud is Off Screen
+        copy = list_of_clouds.copy()
         for cloud in list_of_clouds:
             cloud.move_left()
             if cloud.cloud_x <= 0 - SCREEN_WIDTH/6.5:
-                list_of_clouds.remove(cloud)
+                copy.remove(cloud)
                 cloud = Cloud()
-                list_of_clouds.append(cloud)
+                copy.append(cloud)
 
         pygame.display.update()        
 
