@@ -23,8 +23,8 @@ class DinoSprite(pygame.sprite.Sprite):
         self.index = 0
         self.image = self.images[self.index]
 
-        # creating a rect at position x,y (5,5) of size (134,134)
-        self.rect = pygame.Rect(5, 5, 134, 134)
+        # creating a rect at position x,y (15,15) of size (134,134)
+        self.rect = pygame.Rect(45, 45, 134, 134)
    
     def update(self):
         """Update the sprite"""
@@ -33,6 +33,16 @@ class DinoSprite(pygame.sprite.Sprite):
         if self.index >= len(self.images):
             self.index = 0
         self.image = self.images[self.index]
+
+    def jump(self):
+        "Jump Up"
+        if self.rect.y >= 5:
+            self.rect.y -= 10
+    def fall(self):
+        "Fall Down"
+        if self.rect.y <= 45:
+            self.rect.y += 10   
+
 
 def main():
     """Initialize the game"""
@@ -45,10 +55,26 @@ def main():
     clock = pygame.time.Clock()
 
     running = True
+    jumping = 0
+    jumping_counter = 0
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            jumping = True
+        if jumping:
+            if jumping_counter >= 3:
+                dino_sprite.fall()
+                jumping = False
+                jumping_counter = 0
+            else:
+                dino_sprite.jump()
+                jumping_counter += 1
+        else:
+            dino_sprite.fall()
+
         group.update()
         screen.fill(BACKGROUND_COLOR)
         group.draw(screen)
