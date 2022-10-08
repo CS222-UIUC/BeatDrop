@@ -23,3 +23,4 @@ jobs:
       - name: Test coverage
         run: |
           coverage run -m pytest ./tests/
+          pytest --cov-report term --cov=src tests

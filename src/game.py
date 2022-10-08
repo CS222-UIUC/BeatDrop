@@ -26,4 +26,5 @@ def initialize():
                 running = False
         screen.fill((75, 0, 130))
         pygame.display.update()
-        
+
+initialize()
