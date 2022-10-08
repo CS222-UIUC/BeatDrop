@@ -9,6 +9,18 @@ import game
 def test_init():
     game.initialize()
 
-def test_with_fixture():
-    assert game.SCREEN_WIDTH == 800
-    assert game.SCREEN_HEIGHT == 600
+#Testing Game Dimensions
+def test_game_dimensions():
+    assert game.SCREEN_WIDTH == 1333
+    assert game.SCREEN_HEIGHT == 533
+
+#Testing Cloud Class
+def test_cloud_class():
+    Cloud = game.Cloud()
+    assert Cloud.cloud.get_width() == game.SCREEN_WIDTH//6.5
+    assert Cloud.cloud.get_height() == game.SCREEN_HEIGHT//6.5
+    assert Cloud.cloud_y >= 20
+    assert Cloud.cloud_y <= 200
+
+
+    
