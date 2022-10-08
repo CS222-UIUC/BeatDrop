@@ -5,6 +5,7 @@ likely be heavily modified or deprecated in favor of more complex features. As
 it stands, it functions as a foreshadowing of the audio-based game mechanics
 of Beat Drop and potential graphical features.
 """
+# pylint: disable=E0401
 from random import randint
 from pygame import mixer, display, color, draw, Rect, time
 

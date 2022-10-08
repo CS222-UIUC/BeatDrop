@@ -4,6 +4,7 @@ For use in CS 222 Group 84, "Beat Drop." Beat Drop relies heavily on audio
 analysis to generate the game levels. These functions provide these features,
 including tempo and beat detection.
 """
+# pylint: disable=E0401
 import librosa
 import numpy as np
 import beat_tracker_utils
