@@ -19,8 +19,8 @@ def test_cloud_class():
     Cloud = game.Cloud()
     assert Cloud.cloud.get_width() == game.SCREEN_WIDTH//6.5
     assert Cloud.cloud.get_height() == game.SCREEN_HEIGHT//6.5
-    assert Cloud.cloud_y >= 20
-    assert Cloud.cloud_y <= 200
+    assert Cloud.cloud_y >= 30
+    assert Cloud.cloud_y <= 220
 
 
     
