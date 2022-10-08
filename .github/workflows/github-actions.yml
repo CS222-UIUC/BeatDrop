@@ -15,11 +15,15 @@ jobs:
           pip install pytest pylint numpy pygame librosa pandas pytest-cov soundfile matplotlib
           sudo apt-get install libsndfile1-dev
       - name: Lint with pylint
+        if: always()
         run: |
           pylint ./src
       - name: Test with pytest
+        if: always()
         run: |
           pytest ./tests/
       - name: Test coverage
+        if: always()
         run: |
           coverage run -m pytest ./tests/
+          pytest --cov-report term --cov=src tests
