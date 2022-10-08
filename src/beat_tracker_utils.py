@@ -6,7 +6,7 @@ import numpy as np
 # pylint: disable=C0103
 
 def beat_timestamps(y, sr):
-    """get beat timestamps from filename path to song
+    """get beat timestamps from song audio
 
     Args:
         y (np.ndarray): audio signal

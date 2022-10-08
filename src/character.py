@@ -1,4 +1,6 @@
+"""Initialize Pygame"""
 import pygame
+# pylint: disable=no-member
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -7,8 +9,11 @@ FPS = 10
 
 # class for dino sprite
 class DinoSprite(pygame.sprite.Sprite):
+    """Initialize DinoSprite"""
+    # pylint: disable=C0303
+    # pylint: disable=R0903
     def __init__(self):
-        super(DinoSprite, self).__init__()
+        super().__init__()
         #adding all the images to sprite array
         self.images = []
         self.images.append(pygame.image.load('./assets/dino0.png'))
@@ -20,8 +25,9 @@ class DinoSprite(pygame.sprite.Sprite):
 
         # creating a rect at position x,y (5,5) of size (134,134)
         self.rect = pygame.Rect(5, 5, 134, 134)
-
+   
     def update(self):
+        """Update the sprite"""
         self.index += 1
 
         if self.index >= len(self.images):
@@ -29,6 +35,8 @@ class DinoSprite(pygame.sprite.Sprite):
         self.image = self.images[self.index]
 
 def main():
+    """Initialize the game"""
+    # pylint: disable=R0801
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     dino_sprite = DinoSprite()
@@ -36,11 +44,11 @@ def main():
 
     clock = pygame.time.Clock()
 
-    while True:
-        event = pygame.event.get()
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
         group.update()
         screen.fill(BACKGROUND_COLOR)
         group.draw(screen)
