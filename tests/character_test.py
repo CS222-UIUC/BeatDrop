@@ -19,3 +19,8 @@ def test_update():
     assert dino.index == 1
     dino.update()
     assert dino.index == 0
+
+def test_jump_up():
+    dino = DinoSprite()
+    dino.jump()
+    assert dino.rect.y <= 45

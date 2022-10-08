@@ -10,7 +10,32 @@ sys.path.insert(1, '..//course-project-group-84//src')
 import audio_analysis
 
 def test_get_beat_info():
-    expected_tempo = 107.67
+    filename = librosa.example('nutcracker')
+    
+    # beat_type = 0
+    expected = audio_analysis.get_beat_times(filename)
+    actual = audio_analysis.get_beat_info(filename, beat_type=0)
+    assert (expected == actual).all()
+
+    # beat_type = 1
+    expected = audio_analysis.get_onset_times(filename, min_onset_strength=0.3, min_onset_gap=0.2)
+    actual = audio_analysis.get_beat_info(filename, beat_type=1)
+    assert (expected == actual).all()
+
+    # beat_type = 2
+    expected = audio_analysis.get_blend_times(filename, min_onset_strength=0.3, min_onset_gap=0.2,
+        min_beat_onset_gap=0.5)
+    actual = audio_analysis.get_beat_info(filename, beat_type=2)
+    assert (expected == actual).all()
+
+def test_get_beat_info_illegal_args():
+    filename = librosa.example('nutcracker')
+    with pytest.raises(Exception):
+        audio_analysis.get_beat_info(filename, beat_type=-1)
+    with pytest.raises(Exception):
+        audio_analysis.get_beat_info(filename, beat_type=3)
+
+def test_get_beat_times():
     expected_beat_times = [  1.18421769,   1.71827664,   2.32199546,   2.87927438,
          3.45977324,   4.01705215,   4.59755102,   5.13160998,
          5.7353288 ,   6.29260771,   6.84988662,   7.40716553,
@@ -66,7 +91,53 @@ def test_get_beat_info():
        115.47283447, 116.03011338, 116.58739229, 117.1446712 ]
 
     filename = librosa.example('nutcracker')
-    tempo, beat_times = audio_analysis.get_beat_info(filename)
+    beat_times = audio_analysis.get_beat_times(filename)
 
-    assert abs(tempo - expected_tempo) < 0.01 
-    assert np.mean(beat_times - expected_beat_times) < 0.01 
+    assert np.mean(beat_times - expected_beat_times) < 0.01
+
+def test_filter_by_strength():
+    times = np.array([i for i in range(5)])
+    strength = np.array([0, 1, 1, 0, 1])
+    expected = np.array([times[i] for i in range(5) if strength[i]])
+    
+    actual = audio_analysis.filter_by_strength(times, strength, min_onset_strength=1)
+    print(times, strength, expected, actual)
+    assert (actual.size == expected.size)
+    assert (actual == expected).all()
+
+def test_filter_by_time():
+    times = np.array([1, 2, 2.1, 2.2, 2.3, 3, 3])
+    min_onset_gap = 1
+    expected = np.array([1, 2, 3])
+    
+    actual = audio_analysis.filter_by_time(times, min_onset_gap)
+    print(times, min_onset_gap, expected, actual)
+    assert (actual.size == expected.size)
+    assert (actual == expected).all()
+
+def test_filter_by_time_zero():
+    times = np.array([0, 1, 2, 2.1, 2.2, 2.3, 3, 3])
+    min_onset_gap = 1
+
+    with pytest.raises(Exception):
+        audio_analysis.filter_by_time(times, min_onset_gap)
+
+def test_blend_beat_onset_times():
+    beat_times = np.array([i for i in range(1,5)])
+    onset_times = np.array([1.1, 1.2, 1.3, 1.4, 1.5, 3])
+    min_beat_onset_gap = 0.5
+    expected = np.array([1.1, 1.2, 1.3, 1.4, 1.5, 2, 3, 4])
+
+    actual = audio_analysis.blend_beat_onset_times(beat_times, onset_times, min_beat_onset_gap)
+    assert (actual == expected).all()
+    
+def test_filter_beat_times():
+    beat_times = np.array([i for i in range(1,5)])
+    onset_times = np.array([1.1, 1.2, 1.3, 1.4, 1.5, 3])
+    min_beat_onset_gap = 0.5
+    expected = np.array([2, 4])
+
+    actual = audio_analysis.filter_beat_times(beat_times, onset_times, min_beat_onset_gap)
+    print(expected, actual)
+    assert (actual == expected).all()
+    

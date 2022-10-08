@@ -37,11 +37,10 @@ def prepare_audio(sample_idx, volume=1):
         volume (float): Volume level, between 0 and 1 inclusive.
 
     Returns:
-        float: Audio tempo in bpm.
         np.ndarray: Beat times in milliseconds.
     """
     directory = "assets/sample_audio_files/"
-    sample_audio_files = ["break_free.ogg", "tick.wav"]
+    sample_audio_files = ["break_free_cut.ogg", "break_free.ogg", "tick.wav"]
 
     # check volume within [0,1]"
     if sample_idx < 0 or sample_idx > len(sample_audio_files):
@@ -49,9 +48,9 @@ def prepare_audio(sample_idx, volume=1):
 
     filename = directory + sample_audio_files[sample_idx]
 
-    tempo, beat_times = audio_analysis.get_beat_info(filename)
+    beat_times = audio_analysis.get_beat_info(filename)
     play_music(filename, volume)
-    return tempo, beat_times
+    return beat_times
 
 def get_current_time(start_ticks):
     """Returns the runtime in seconds since starting main loop.
@@ -84,7 +83,7 @@ def draw_random_color_rect(screen, size):
     """Draws a randomly-colored rectangle in the top-left corner.
 
     Args:
-        screen (_type_): Surface to draw on.
+        screen (pygame.display): Surface to draw on.
         size (int): Width/Length of the rectangle.
     """
     # pylint: disable=I1101
@@ -92,7 +91,7 @@ def draw_random_color_rect(screen, size):
     draw.rect(screen, rand_color, Rect(0,0,size,size))
     display.flip()
 
-def main_loop(screen, tempo, beat_times):
+def main_loop(screen, beat_times):
     """Main loop.
 
     Args:
@@ -100,16 +99,16 @@ def main_loop(screen, tempo, beat_times):
         beat_times (np.ndarray): Beat times in milliseconds.
     """
     clock = time.Clock()
-    start_offset = 0.1 * tempo
+    start_offset = 0
     start_ticks = time.get_ticks() + start_offset
     beat_idx = 0
 
     while True:
         if next_beat(beat_idx, beat_times, start_ticks):
-            draw_random_color_rect(screen, size=40)
+            draw_random_color_rect(screen, size=200)
             beat_idx += 1
 
-        if not mixer.music.get_busy():
+        if not mixer.music.get_busy() and beat_idx >= len(beat_times):
             break
 
         clock.tick(60)
@@ -117,9 +116,9 @@ def main_loop(screen, tempo, beat_times):
 def main():
     """Visualizes audio beats.
     """
-    tempo, beat_times = prepare_audio(1)
+    beat_times = prepare_audio(0)
     screen = display.set_mode((640, 480))
-    main_loop(screen, tempo, beat_times)
+    main_loop(screen, beat_times)
 
 if __name__ == '__main__':
     main()

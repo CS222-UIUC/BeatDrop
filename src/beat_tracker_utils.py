@@ -55,6 +55,7 @@ def visualization_plot(y, sr):
     return fig
 
 
+
 if __name__ == "__main__":
     y, sr = librosa.load('./assets/example_music.wav')
     fig = visualization_plot(y, sr)
