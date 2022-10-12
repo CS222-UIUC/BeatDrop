@@ -7,7 +7,7 @@ including tempo and beat detection.
 # pylint: disable=E0401
 import librosa
 import numpy as np
-import beat_tracker_utils
+import matplotlib.pyplot as plt
 
 def get_beat_info(filename, beat_type=2, min_onset_strength=0.3, min_onset_gap=0.2,
     min_beat_onset_gap=0.5):
@@ -68,9 +68,11 @@ def get_onset_times(filename, min_onset_strength, min_onset_gap):
 
     Returns:
         np.ndarray: Onset times in milliseconds.
+        np.ndarray: Onset strengths
     """
     audio, sample_rate = open_audio(filename)
-    times, strength = beat_tracker_utils.onset_strength_timestamps(audio, sample_rate)
+    strength = librosa.onset.onset_strength(y=audio, sr=sample_rate, aggregate=np.median)
+    times = librosa.times_like(strength, sr=sample_rate)
     return filter_onset_times(times, strength, min_onset_strength, min_onset_gap)
 
 def filter_onset_times(times, strength, min_onset_strength, min_onset_gap):
@@ -162,3 +164,26 @@ def filter_beat_times(beat_times, onset_times, min_beat_onset_gap):
     """
     return np.array([beat_time for beat_time in beat_times
         if (abs(beat_time - onset_times) >= min_beat_onset_gap).all()])
+
+def visualization_plot(filename):
+    """A visualization plot with onset strength, beat timings, and blended beats.
+
+    Args:
+        filename (string): Path to audio file to identify beats from.
+    Returns:
+        plt.Figure: Visualization of beats
+    """
+    beat_times = get_beat_info(filename, 0)
+    onset_times = get_beat_info(filename, 1)
+    blend_times = get_beat_info(filename, 2)
+
+    fig, ax = plt.subplots()
+    # ax.plot(onset_times, onset_env, label='Onset strength')
+    ax.vlines(blend_times, 0, 1, alpha=0.5, color='b', linestyle='-', label='Blended')
+    ax.vlines(beat_times, 0, 1, alpha=0.5, color='r', linestyle='--', label='Beats')
+    ax.vlines(onset_times, 0, 1, alpha=0.5, color='g', linestyle=':', label='Onsets')
+    ax.legend()
+    plt.show()
+    return fig
+
+visualization_plot("assets/example_music.wav")
