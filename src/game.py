@@ -2,8 +2,11 @@
 #pylint: disable=no-member
 #pylint: disable=trailing-whitespace
 #pylint: disable=too-few-public-methods
+#pylint: disable=too-many-locals
 import random
 import pygame
+
+from pygame import mixer
 
 SCREEN_WIDTH = 1333
 SCREEN_HEIGHT = 533
@@ -15,7 +18,7 @@ class Cloud:
     cloud = pygame.transform.scale(cloud_image, (SCREEN_WIDTH/6.5, SCREEN_HEIGHT/6.5))
     cloud_x = 0
     cloud_y = 0
-    cloud_x_change = 0.3
+    cloud_x_change = 0.5
     
     def __init__(self, cloud_x = 1333):
         self.cloud_x = cloud_x
@@ -29,7 +32,7 @@ class Cloud:
 def initialize():
     """Initialize Method"""
     pygame.init()
-
+    
     #Create Display
     screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
 
@@ -37,11 +40,13 @@ def initialize():
     picture = pygame.image.load('assets/background.jpg')
     background = pygame.transform.scale(picture, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
+    #Create Background Music
+    mixer.music.load()
+
     #Title and Icon
     pygame.display.set_caption("BeatDrop")
     icon = pygame.image.load('assets/gameicon.png')
     pygame.display.set_icon(icon)
-
         
     #Clouds
     list_of_clouds = []
@@ -52,6 +57,12 @@ def initialize():
     list_of_clouds.append(cloud_two)
     list_of_clouds.append(cloud_three)    
     
+    #Score
+    score_val = 0
+    font = pygame.font.Font('freesansbold.ttf', 32)
+    text_x = 10
+    test_y = 10
+        
     #Default Game Loop
     running = True
     while running:
@@ -62,18 +73,22 @@ def initialize():
             if event.type == pygame.QUIT:
                 running = False
         
+        #Update and Display Score
+        score_val += 1
+        score = font.render("Score: " + str(score_val), True, (255, 255, 255))
+        screen.blit(score, (text_x, test_y))
+        
         #Update Cloud Graphics/Position
-        for cloud in list_of_clouds:
+        copy = list_of_clouds.copy()
+        for cloud in copy:
             screen.blit(cloud.cloud, (cloud.cloud_x, cloud.cloud_y))
 
         #Change Cloud X Position and Check if Cloud is Off Screen
-        copy = list_of_clouds.copy()
-        for cloud in list_of_clouds:
+        for cloud in copy:
             cloud.move_left()
             if cloud.cloud_x <= 0 - SCREEN_WIDTH/6.5:
-                copy.remove(cloud)
-                cloud = Cloud()
-                copy.append(cloud)
+                cloud.cloud_x = 1333
+                cloud.cloud_y = random.randint(30, 220)
 
         pygame.display.update()        
 

@@ -4,7 +4,9 @@ import sys
 sys.path.insert(1, '..//course-project-group-84//src')
 
 import librosa
+import time
 # from algorithm import *
+from score import *
 
 # @pytest.fixture
 # def test_beat_timestamps():
@@ -32,3 +34,17 @@ import librosa
 #     assert len(gaps.shape) > 1
 #     gap_timestamps, gap_strengths = gaps[0], gaps[1]
 #     assert np.all(gap_strengths > 0.3)
+
+def test_score():
+    score = Score()
+    time.sleep(1)
+    assert score.get_score() == 0
+    score.start_timer()
+    time.sleep(1)
+    assert score.get_score() > 0 and score.get_score() < 2
+    score.stop_timer()
+    current_score = score.get_score()
+    time.sleep(2)
+    assert score.get_score() == current_score
+    
+    
