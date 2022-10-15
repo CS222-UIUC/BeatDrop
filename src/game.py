@@ -2,6 +2,7 @@
 #pylint: disable=no-member
 #pylint: disable=trailing-whitespace
 #pylint: disable=too-few-public-methods
+#pylint: disable=too-many-locals
 import random
 import pygame
 
@@ -59,8 +60,8 @@ def initialize():
     #Score
     score_val = 0
     font = pygame.font.Font('freesansbold.ttf', 32)
-    textX = 10
-    testY = 10
+    text_x = 10
+    test_y = 10
         
     #Default Game Loop
     running = True
@@ -75,7 +76,7 @@ def initialize():
         #Update and Display Score
         score_val += 1
         score = font.render("Score: " + str(score_val), True, (255, 255, 255))
-        screen.blit(score, (textX, testY))
+        screen.blit(score, (text_x, test_y))
         
         #Update Cloud Graphics/Position
         copy = list_of_clouds.copy()
