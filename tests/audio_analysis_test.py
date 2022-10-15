@@ -1,5 +1,6 @@
 """Test cases for musicvisualizer/audio_analysis.
 """
+from this import d
 import librosa
 import numpy as np
 import pytest
@@ -23,9 +24,8 @@ def test_get_beat_info():
     assert (expected == actual).all()
 
     # beat_type = 2
-    expected = audio_analysis.get_blend_times(filename, min_onset_strength=0.3, min_onset_gap=0.2,
-        min_beat_onset_gap=0.5)
-    actual = audio_analysis.get_beat_info(filename, beat_type=2)
+    expected = audio_analysis.get_blend_times(filename, min_onset_strength=0.3, min_onset_gap=0.2)
+    actual = audio_analysis.get_beat_info(filename, beat_type=2, min_onset_strength=0.3, min_onset_gap=0.2)
     assert (expected == actual).all()
 
 def test_get_beat_info_illegal_args():
@@ -140,4 +140,7 @@ def test_filter_beat_times():
     actual = audio_analysis.filter_beat_times(beat_times, onset_times, min_beat_onset_gap)
     print(expected, actual)
     assert (actual == expected).all()
-    
+
+def test_visualization_plot():
+    fig = audio_analysis.visualization_plot("tests/test_file.wav")
+    assert len(fig.axes) == 1
