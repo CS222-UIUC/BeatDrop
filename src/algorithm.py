@@ -68,7 +68,7 @@ def draw_gaps(gaps):
     start = 0
     for gap_timestamp, gap_strength in zip(gap_timestamps, gap_strengths):
         plt.plot([start, gap_timestamp], [0, 0], color='r')
-        start = gap_timestamp + 1*gap_strength
+        start = gap_timestamp + max(0.5, gap_strength)
     plt.plot([start, start + 2], [0, 0], color='r')
     plt.show()
 
