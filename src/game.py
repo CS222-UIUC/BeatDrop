@@ -56,6 +56,12 @@ def initialize():
     list_of_clouds.append(cloud_two)
     list_of_clouds.append(cloud_three)    
     
+    #Score
+    score_val = 0
+    font = pygame.font.Font('freesansbold.ttf', 32)
+    textX = 10
+    testY = 10
+        
     #Default Game Loop
     running = True
     while running:
@@ -66,6 +72,11 @@ def initialize():
             if event.type == pygame.QUIT:
                 running = False
         
+        #Update and Display Score
+        score_val += 1
+        score = font.render("Score: " + str(score_val), True, (255, 255, 255))
+        screen.blit(score, (textX, testY))
+        
         #Update Cloud Graphics/Position
         copy = list_of_clouds.copy()
         for cloud in copy:
@@ -75,9 +86,8 @@ def initialize():
         for cloud in copy:
             cloud.move_left()
             if cloud.cloud_x <= 0 - SCREEN_WIDTH/6.5:
-                copy.remove(cloud)
-                cloud = Cloud()
-                copy.append(cloud)
+                cloud.cloud_x = 1333
+                cloud.cloud_y = random.randint(30, 220)
 
         pygame.display.update()        
 
