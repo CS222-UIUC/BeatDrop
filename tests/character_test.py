@@ -11,7 +11,7 @@ from character import DinoSprite
 def test_init():
     dino = DinoSprite()
     assert dino.index == 0
-    assert dino.rect == pygame.Rect(5, 5, 134, 134)
+    assert dino.rect == pygame.Rect(45, dino.ground_lvl, 100, 100)
 
 def test_update():
     dino = DinoSprite()
@@ -23,4 +23,4 @@ def test_update():
 def test_jump_up():
     dino = DinoSprite()
     dino.jump()
-    assert dino.rect.y <= 45
+    assert dino.rect.y > (dino.ground_lvl - 80)
