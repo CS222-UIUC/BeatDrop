@@ -26,7 +26,7 @@ def generate_level(load_path, save_path="", beat_type=2, min_onset_strength=0.3,
     """
     default_beat_strength = 0.5
     gaps = get_gaps(load_path, beat_type, default_beat_strength, min_onset_strength, min_onset_gap)
-    if not save_path == "":
+    if save_path != "":
         save_to_file(save_path, gaps)
     return gaps
 
