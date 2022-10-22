@@ -107,55 +107,55 @@ def main():
         jump_limit = dino_sprite.ground_lvl - 80
         keys = pygame.key.get_pressed()
 
-        # toggle jump state
-        fall_lock = False
-        if keys[pygame.K_SPACE] and dino_sprite.rect.y >= jump_limit & fall_lock == False:
-            dino_sprite.state = "jumping"
-        else:
-            if dino_sprite.rect.y < dino_sprite.ground_lvl:
-                dino_sprite.state = "falling"
-                fall_lock = True
-            else:
-                dino_sprite.state = "running"
+        # # toggle jump state
+        # fall_lock = False
+        # if keys[pygame.K_SPACE] and dino_sprite.rect.y >= jump_limit & fall_lock == False:
+        #     dino_sprite.state = "jumping"
+        # else:
+        #     if dino_sprite.rect.y < dino_sprite.ground_lvl:
+        #         dino_sprite.state = "falling"
+        #         fall_lock = True
+        #     else:
+        #         dino_sprite.state = "running"
 
-        # toggle states based on collisions and other factors
-        if dino_sprite.state == "jumping":
-            # if sprite reaches jump limit, it will start falling
-            if dino_sprite.rect.y <= jump_limit:
-                dino_sprite.state = "falling"
-            else:
-                dino_sprite.jump()
-        elif dino_sprite.state == "falling":
-            # if sprite collides with platform, it will stop falling
-            if dino_sprite.rect.colliderect(pt1):
-                fall_lock = False
-                dino_sprite.state = "running"
-            else:
-                dino_sprite.fall()
+        # # toggle states based on collisions and other factors
+        # if dino_sprite.state == "jumping":
+        #     # if sprite reaches jump limit, it will start falling
+        #     if dino_sprite.rect.y <= jump_limit:
+        #         dino_sprite.state = "falling"
+        #     else:
+        #         dino_sprite.jump()
+        # elif dino_sprite.state == "falling":
+        #     # if sprite collides with platform, it will stop falling
+        #     if dino_sprite.rect.colliderect(pt1):
+        #         fall_lock = False
+        #         dino_sprite.state = "running"
+        #     else:
+        #         dino_sprite.fall()
 
         # press key , if not fall_lock'ed and within jump_limit -> set state to jump
         # if key is released while in jump state, set state to falling, turn on fall_lock
         # if it touches the platform, set state to running, turn off fall_lock
 
-        # if keys[pygame.K_SPACE] and dino_sprite.rect.y > jump_limit and not dino_sprite.fall_lock:
-        #     dino_sprite.state = "jumping"
-        # elif dino_sprite.rect.y <= jump_limit:
-        #     dino_sprite.state = "falling"
-        #     dino_sprite.fall_lock = True
-        # elif (not keys[pygame.K_SPACE] and dino_sprite.state == "jumping"):
-        #     dino_sprite.state = "falling"
-        #     dino_sprite.fall_lock = True
-        # elif dino_sprite.rect.colliderect(pt1):
-        #     dino_sprite.state = "running"
-        #     dino_sprite.fall_lock = False
-        # elif not dino_sprite.rect.colliderect(pt1):
-        #     dino_sprite.state = "falling"
-        #     dino_sprite.fall_lock = True
+        if keys[pygame.K_SPACE] and dino_sprite.rect.y > jump_limit and not dino_sprite.fall_lock:
+            dino_sprite.state = "jumping"
+        elif dino_sprite.rect.y <= jump_limit:
+            dino_sprite.state = "falling"
+            dino_sprite.fall_lock = True
+        elif (not keys[pygame.K_SPACE] and dino_sprite.state == "jumping"):
+            dino_sprite.state = "falling"
+            dino_sprite.fall_lock = True
+        elif dino_sprite.rect.colliderect(pt1):
+            dino_sprite.state = "running"
+            dino_sprite.fall_lock = False
+        elif not dino_sprite.rect.colliderect(pt1):
+            dino_sprite.state = "falling"
+            dino_sprite.fall_lock = True
 
-        # if dino_sprite.state == "jumping":
-        #     dino_sprite.jump()
-        # if dino_sprite.state == "falling":
-        #     dino_sprite.fall()
+        if dino_sprite.state == "jumping":
+            dino_sprite.jump()
+        if dino_sprite.state == "falling":
+            dino_sprite.fall()
 
         group.update()
         screen.fill(BACKGROUND_COLOR)
