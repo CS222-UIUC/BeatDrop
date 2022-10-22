@@ -14,19 +14,22 @@ def test_get_beat_info():
     filename = librosa.example('nutcracker')
     
     # beat_type = 0
-    expected = audio_analysis.get_beat_times(filename)
-    actual = audio_analysis.get_beat_info(filename, beat_type=0)
-    assert (expected == actual).all()
+    expected_times, expected_strengths = audio_analysis.get_beat_times(filename, default_beat_strength=0.5)
+    actual_times, actual_strengths = audio_analysis.get_beat_info(filename, beat_type=0, default_beat_strength=0.5)
+    assert (expected_times == actual_times).all()
+    assert (expected_strengths == actual_strengths).all()
 
     # beat_type = 1
-    expected = audio_analysis.get_onset_times(filename, min_onset_strength=0.3, min_onset_gap=0.2)
-    actual = audio_analysis.get_beat_info(filename, beat_type=1)
-    assert (expected == actual).all()
+    expected_times, expected_strengths = audio_analysis.get_onset_times(filename, min_onset_strength=0.3, min_onset_gap=0.2)
+    actual_times, actual_strengths = audio_analysis.get_beat_info(filename, beat_type=1)
+    assert (expected_times == actual_times).all()
+    assert (expected_strengths == actual_strengths).all()
 
     # beat_type = 2
-    expected = audio_analysis.get_blend_times(filename, min_onset_strength=0.3, min_onset_gap=0.2)
-    actual = audio_analysis.get_beat_info(filename, beat_type=2, min_onset_strength=0.3, min_onset_gap=0.2)
-    assert (expected == actual).all()
+    expected_times, expected_strengths = audio_analysis.get_blend_times(filename, default_beat_strength=0.5, min_onset_strength=0.3, min_onset_gap=0.2)
+    actual_times, actual_strengths = audio_analysis.get_beat_info(filename, beat_type=2, default_beat_strength=0.5, min_onset_strength=0.3, min_onset_gap=0.2)
+    assert (expected_times == actual_times).all()
+    assert (expected_strengths == actual_strengths).all()
 
 def test_get_beat_info_illegal_args():
     filename = librosa.example('nutcracker')
@@ -91,9 +94,11 @@ def test_get_beat_times():
        115.47283447, 116.03011338, 116.58739229, 117.1446712 ]
 
     filename = librosa.example('nutcracker')
-    beat_times = audio_analysis.get_beat_times(filename)
+    default_beat_strength = 0.5
+    beat_times, beat_strengths = audio_analysis.get_beat_times(filename, default_beat_strength)
 
     assert np.mean(beat_times - expected_beat_times) < 0.01
+    assert (beat_strengths == default_beat_strength).all()
 
 def test_filter_by_strength():
     times = np.array([i for i in range(5)])
@@ -124,22 +129,32 @@ def test_filter_by_time_zero():
 
 def test_blend_beat_onset_times():
     beat_times = np.array([i for i in range(1,5)])
+    beat_strengths = beat_times
     onset_times = np.array([1.1, 1.2, 1.3, 1.4, 1.5, 3])
+    onset_strengths = onset_times
     min_beat_onset_gap = 0.5
-    expected = np.array([1.1, 1.2, 1.3, 1.4, 1.5, 2, 3, 4])
 
-    actual = audio_analysis.blend_beat_onset_times(beat_times, onset_times, min_beat_onset_gap)
-    assert (actual == expected).all()
+    expected_times = np.array([1.1, 1.2, 1.3, 1.4, 1.5, 2, 3, 4])
+    expected_strengths = expected_times
+
+    actual_times, actual_strengths = audio_analysis.blend_beat_onset_times(beat_times,
+        beat_strengths, onset_times, onset_strengths, min_beat_onset_gap)
+    assert (actual_times == expected_times).all()
+    assert (actual_strengths == expected_strengths).all()
     
 def test_filter_beat_times():
     beat_times = np.array([i for i in range(1,5)])
+    beat_strengths = beat_times
     onset_times = np.array([1.1, 1.2, 1.3, 1.4, 1.5, 3])
     min_beat_onset_gap = 0.5
-    expected = np.array([2, 4])
+    
+    expected_times = np.array([2, 4])
+    expected_strengths = expected_times
 
-    actual = audio_analysis.filter_beat_times(beat_times, onset_times, min_beat_onset_gap)
-    print(expected, actual)
-    assert (actual == expected).all()
+    actual_times, actual_strengths = audio_analysis.filter_beat_times(beat_times, beat_strengths,
+        onset_times, min_beat_onset_gap)
+    assert (actual_times == expected_times).all()
+    assert (actual_strengths == expected_strengths).all()
 
 def test_visualization_plot():
     fig = audio_analysis.visualization_plot("tests/test_file.wav")
