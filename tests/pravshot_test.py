@@ -1,12 +1,16 @@
 import pytest
 import sys
 
+from src.game import SCREEN_HEIGHT
+
 sys.path.insert(1, '..//course-project-group-84//src')
 
 import librosa
 import time
 # from algorithm import *
 from score import *
+from platforms import *
+from game import *
 
 # @pytest.fixture
 # def test_beat_timestamps():
@@ -47,4 +51,21 @@ def test_score():
     time.sleep(2)
     assert score.get_score() == current_score
     
-    
+def test_platforms():
+    platform1 = Platform(start_x=0, width=100)
+    platform2 = Platform(start_x=100, end_x=300)
+    assert Platform.HEIGHT > 0 and Platform.HEIGHT < SCREEN_HEIGHT
+    assert len(Platform.COLOR) == 3
+    assert Platform.COLOR[0] >= 0 and Platform.COLOR[0] <= 255
+    assert Platform.COLOR[1] >= 0 and Platform.COLOR[1] <= 255
+    assert Platform.COLOR[2] >= 0 and Platform.COLOR[2] <= 255
+    assert platform1.get_x() == 0
+    assert platform2.get_x() == 100
+    assert platform1.get_y() == SCREEN_HEIGHT - Platform.HEIGHT
+    assert platform2.get_y() == SCREEN_HEIGHT - Platform.HEIGHT
+    assert platform1.get_width() == 100
+    assert platform2.get_width() == 200
+    assert platform1.move_left(10) == -10
+    assert platform1.get_x() == -10
+    assert platform2.move_left(-10) == 110
+    assert platform2.get_x() == 110
