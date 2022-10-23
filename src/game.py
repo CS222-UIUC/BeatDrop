@@ -11,6 +11,11 @@ from pygame import mixer
 SCREEN_WIDTH = 1333
 SCREEN_HEIGHT = 533
 
+RED   = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE  = (0, 0, 255)
+COLOR_LIST = [RED, GREEN, BLUE]
+
 #Class Cloud
 class Cloud:
     """Initialize Cloud Class"""
@@ -41,8 +46,9 @@ def initialize():
     background = pygame.transform.scale(picture, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
     #Create Background Music
-    mixer.music.load()
-
+    mixer.music.load('assets/sample_audio_files/righteous.ogg')
+    mixer.music.play(-1)
+    
     #Title and Icon
     pygame.display.set_caption("BeatDrop")
     icon = pygame.image.load('assets/gameicon.png')
@@ -62,10 +68,15 @@ def initialize():
     font = pygame.font.Font('freesansbold.ttf', 32)
     text_x = 10
     test_y = 10
-        
+    flash = False
+    color_index = 0
+    
     #Default Game Loop
     running = True
     while running:
+        #Clock/Time
+        clock = pygame.time.get_ticks() 
+        
         screen.fill((0, 0, 0))
         #Background Image
         screen.blit(background, (0,0))
@@ -74,10 +85,20 @@ def initialize():
                 running = False
         
         #Update and Display Score
-        score_val += 1
+        if (flash is False):
+            score_val += 1
         score = font.render("Score: " + str(score_val), True, (255, 255, 255))
-        screen.blit(score, (text_x, test_y))
-        
+        screen.blit(score, (text_x, test_y))            
+        if (score_val % 1000 == 0):
+            flash = True
+            if (color_index == 2):
+                color_index = 0
+                flash = False
+            score = font.render("Score: " + str(score_val), True, COLOR_LIST[color_index])
+            screen.blit(score, (text_x, test_y))
+            color_index += 1
+             
+
         #Update Cloud Graphics/Position
         copy = list_of_clouds.copy()
         for cloud in copy:
