@@ -3,6 +3,11 @@
 #pylint: disable=trailing-whitespace
 #pylint: disable=too-few-public-methods
 #pylint: disable=too-many-locals
+#pylint: disable=wrong-import-position
+#pylint: disable=import-error
+#pylint: disable=unused-variable
+#pylint: disable=too-many-branches
+#pylint: disable=too-many-statements
 import random
 import sys
 import pygame
@@ -22,10 +27,11 @@ COLOR_LIST = [RED, GREEN, BLUE]
 #Class Button
 class Button():
     """Initialize Button Class"""
-    def __init__(self, x, y, image, scale):
-        self.image = pygame.transform.scale(image, (int(SCREEN_WIDTH * scale), int(SCREEN_HEIGHT * scale)))
+    def __init__(self, x_pos, y_pos, image, scale):
+        self.image = pygame.transform.scale(image,
+                                            (int(SCREEN_WIDTH * scale), int(SCREEN_HEIGHT * scale)))
         self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
+        self.rect.topleft = (x_pos, y_pos)
         self.clicked = False
     
     def draw(self, screen):
@@ -44,7 +50,7 @@ class Button():
             self.clicked = False
 
         #Draw button
-        screen.blit(self.image, (self.rect.x, self.rect.y))
+        screen.blit(self.image, (self.rect.x_pos, self.rect.y_pos))
         
         return action
 
@@ -140,7 +146,7 @@ def initialize():
     if start_menu(screen):
         while running:
             #Start Music
-            if (start_music):
+            if start_music:
                 mixer.music.play(-1)
                 start_music = False
             
@@ -155,13 +161,13 @@ def initialize():
                     running = False
             
             #Update and Display Score
-            if (flash is False):
+            if flash is False:
                 score_val += 1
             score_disp = font.render("Score: " + str(score_val), True, (255, 255, 255))
             screen.blit(score_disp, (text_x, test_y))            
-            if (score_val % 1000 == 0):
+            if score_val % 1000 == 0:
                 flash = True
-                if (color_index == 2):
+                if color_index == 2:
                     color_index = 0
                     flash = False
                 score_disp = font.render("Score: " + str(score_val), True, COLOR_LIST[color_index])
