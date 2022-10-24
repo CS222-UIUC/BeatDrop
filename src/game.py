@@ -1,15 +1,52 @@
-"""Initialize Pygame"""
+"""Import Statements"""
 #pylint: disable=no-member
 #pylint: disable=trailing-whitespace
 #pylint: disable=too-few-public-methods
 #pylint: disable=too-many-locals
 import random
+import sys
 import pygame
 
 from pygame import mixer
+sys.path.insert(1, '..//course-project-group-84//src')
+import score
 
 SCREEN_WIDTH = 1333
 SCREEN_HEIGHT = 533
+
+RED   = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE  = (0, 0, 255)
+COLOR_LIST = [RED, GREEN, BLUE]
+
+#Class Button
+class Button():
+    """Initialize Button Class"""
+    def __init__(self, x, y, image, scale):
+        self.image = pygame.transform.scale(image, (int(SCREEN_WIDTH * scale), int(SCREEN_HEIGHT * scale)))
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+        self.clicked = False
+    
+    def draw(self, screen):
+        """Draw button on screen"""
+        action = False
+        #Mouse Position
+        pos = pygame.mouse.get_pos()
+        
+        #Check mouse position and clicked conditions
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked is False:
+                self.clicked = True
+                action = True
+                        
+        if pygame.mouse.get_pressed()[0] == 0:
+            self.clicked = False
+
+        #Draw button
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+        
+        return action
 
 #Class Cloud
 class Cloud:
@@ -28,6 +65,36 @@ class Cloud:
         """Move Cloud Left"""
         self.cloud_x -= self.cloud_x_change
 
+#Start Menu
+def start_menu(screen):
+    """Start Menu"""
+    #Start and Exit Buttons
+    start_img = pygame.image.load('assets/start.png').convert_alpha()
+    exit_img = pygame.image.load('assets/exit.png').convert_alpha()
+    start_button = Button(SCREEN_WIDTH/2 - 150, SCREEN_HEIGHT/2 - 60, start_img, 0.25)
+    exit_button = Button(SCREEN_WIDTH/2 - 130, SCREEN_HEIGHT/2 + 100, exit_img, 0.22)   
+    icon = pygame.image.load('assets/gameicon.png')
+    icon_load = pygame.transform.scale(icon, (SCREEN_WIDTH/5, SCREEN_HEIGHT/2.5))
+    
+    start_game = False
+    while start_game is False:
+        screen.fill((202, 228, 241))
+        screen.blit(icon_load, (SCREEN_WIDTH/2 - 125, SCREEN_HEIGHT/2 - 270))
+        if start_button.draw(screen):
+            print('START')
+            start_game = True
+        if exit_button.draw(screen):
+            print('EXIT')
+            pygame.quit()
+        
+        for event in pygame.event.get():
+            #Quit Game
+            if event.type == pygame.QUIT:
+                start_game = True
+        pygame.display.update()        
+
+    return start_game
+
 #Initialize Pygame
 def initialize():
     """Initialize Method"""
@@ -35,14 +102,15 @@ def initialize():
     
     #Create Display
     screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+    pygame.display.set_caption("BeatDrop")     
 
     #Create Background Variable
     picture = pygame.image.load('assets/background.jpg')
     background = pygame.transform.scale(picture, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
     #Create Background Music
-    mixer.music.load()
-
+    mixer.music.load('assets/sample_audio_files/righteous.ogg')
+    
     #Title and Icon
     pygame.display.set_caption("BeatDrop")
     icon = pygame.image.load('assets/gameicon.png')
@@ -58,39 +126,67 @@ def initialize():
     list_of_clouds.append(cloud_three)    
     
     #Score
-    score_val = 0
+    score_one = score.Score()
+    score_val = score_one.get_score()
     font = pygame.font.Font('freesansbold.ttf', 32)
     text_x = 10
     test_y = 10
-        
+    flash = False
+    color_index = 0
+    
     #Default Game Loop
     running = True
-    while running:
-        screen.fill((0, 0, 0))
-        #Background Image
-        screen.blit(background, (0,0))
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-        
-        #Update and Display Score
-        score_val += 1
-        score = font.render("Score: " + str(score_val), True, (255, 255, 255))
-        screen.blit(score, (text_x, test_y))
-        
-        #Update Cloud Graphics/Position
-        copy = list_of_clouds.copy()
-        for cloud in copy:
-            screen.blit(cloud.cloud, (cloud.cloud_x, cloud.cloud_y))
+    start_music = True
+    if start_menu(screen):
+        while running:
+            #Start Music
+            if (start_music):
+                mixer.music.play(-1)
+                start_music = False
+            
+            #Clock/Time
+            clock = pygame.time.get_ticks() 
+            
+            screen.fill((0, 0, 0))
+            #Background Image
+            screen.blit(background, (0,0))
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+            
+            #Update and Display Score
+            if (flash is False):
+                score_val += 1
+            score_disp = font.render("Score: " + str(score_val), True, (255, 255, 255))
+            screen.blit(score_disp, (text_x, test_y))            
+            if (score_val % 1000 == 0):
+                flash = True
+                if (color_index == 2):
+                    color_index = 0
+                    flash = False
+                score_disp = font.render("Score: " + str(score_val), True, COLOR_LIST[color_index])
+                screen.blit(score_disp, (text_x, test_y))
+                color_index += 1
+                
 
-        #Change Cloud X Position and Check if Cloud is Off Screen
-        for cloud in copy:
-            cloud.move_left()
-            if cloud.cloud_x <= 0 - SCREEN_WIDTH/6.5:
-                cloud.cloud_x = 1333
-                cloud.cloud_y = random.randint(30, 220)
+            #Update Cloud Graphics/Position
+            copy = list_of_clouds.copy()
+            for cloud in copy:
+                screen.blit(cloud.cloud, (cloud.cloud_x, cloud.cloud_y))
 
-        pygame.display.update()        
+            #Change Cloud X Position and Check if Cloud is Off Screen
+            for cloud in copy:
+                cloud.move_left()
+                if cloud.cloud_x <= 0 - SCREEN_WIDTH/6.5:
+                    cloud.cloud_x = 1333
+                    cloud.cloud_y = random.randint(30, 220)
+            
+            #Handle Events/Quitting
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                
+            pygame.display.update()        
 
 def main() :
     """Main Method"""

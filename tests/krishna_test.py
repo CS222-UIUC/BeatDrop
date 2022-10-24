@@ -21,6 +21,11 @@ def test_cloud_class():
     assert Cloud.cloud.get_height() == game.SCREEN_HEIGHT//6.5
     assert Cloud.cloud_y >= 30
     assert Cloud.cloud_y <= 220
+    
+def test_colors():
+    assert game.RED == (255, 0, 0)
+    assert game.GREEN == (0, 255, 0)
+    assert game.BLUE == (0, 0, 255)
 
 
     
