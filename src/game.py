@@ -50,7 +50,7 @@ class Button():
             self.clicked = False
 
         #Draw button
-        screen.blit(self.image, (self.rect.x_pos, self.rect.y_pos))
+        screen.blit(self.image, (self.rect.x, self.rect.y))
         
         return action
 
