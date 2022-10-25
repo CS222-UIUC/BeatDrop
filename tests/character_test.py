@@ -23,4 +23,4 @@ def test_update():
 def test_jump_up():
     dino = DinoSprite()
     dino.jump()
-    assert dino.rect.y > (dino.ground_lvl - 80)
+    assert dino.rect.y > (dino.ground_lvl - 100)
