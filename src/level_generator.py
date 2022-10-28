@@ -22,7 +22,7 @@ def generate_level(load_path, save_path="", beat_type=2, min_onset_strength=0.3,
         min_onset_gap (float, optional): Defaults to 0.75.
             Minimum time between gaps.
     Returns:
-        np.ndarray: 2d array with gap timestamps and lengths
+        np.ndarray: 2d array with gap timestamps in seconds and lengths
     """
     default_beat_strength = 0.5
     gaps = get_gaps(load_path, beat_type, default_beat_strength, min_onset_strength, min_onset_gap)
@@ -41,7 +41,7 @@ def get_gaps(load_path, beat_type, default_beat_strength, min_onset_strength, mi
         min_onset_strength (float, optional): Minimum onset strength to be considered for a gap.
         min_onset_gap (float, optional): Minimum time between gaps.
     Returns:
-        np.ndarray: 2d array with gap timestamps and lengths
+        np.ndarray: 2d array with gap timestamps in seconds and lengths
     """
     # currently runs only with onset beat_type (beat_type = 1)
     beat_times, beat_strengths = audio_analysis.get_beat_info(load_path, beat_type,
@@ -55,12 +55,12 @@ def convert_beats_to_gaps(beat_times, beat_strengths):
         beat_times (np.ndarray): Beat times in milliseconds.
         beat_strengths (np.ndarray): Normalized beat strengths.
     Returns:
-        np.ndarray: 2d array with gap timestamps and lengths
+        np.ndarray: 2d array with gap timestamps in seconds and lengths
     """
     gaps = np.array([])
     for time, strength in zip(beat_times, beat_strengths):
         # dummy conversion; to be replaced with something functional with physics engine
-        gaps = np.append(gaps, np.array([time, strength]))
+        gaps = np.append(gaps, np.array([time / 1000, strength]))
     return gaps.reshape((-1,2))
 
 def save_to_file(save_path, gaps):
