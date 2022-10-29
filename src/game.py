@@ -25,6 +25,9 @@ GREEN = (0, 255, 0)
 BLUE  = (0, 0, 255)
 COLOR_LIST = [RED, GREEN, BLUE]
 
+# States
+GAME_OVER = False
+
 #Class Button
 class Button():
     """Initialize Button Class"""
@@ -82,10 +85,6 @@ def start_menu(screen):
     exit_button = Button(SCREEN_WIDTH/2 - 130, SCREEN_HEIGHT/2 + 100, exit_img, 0.22)
     icon = pygame.image.load('assets/gameicon.png')
     icon_load = pygame.transform.scale(icon, (SCREEN_WIDTH/5, SCREEN_HEIGHT/2.5))
-    
-    # temporary code to test out game over
-    tmp_img = pygame.image.load('assets/dino0.png').convert_alpha()
-    tmp_button = Button(SCREEN_WIDTH/2 - 530, SCREEN_HEIGHT/2 + 100, tmp_img, 0.22)
 
     start_game = False
     while start_game is False:
@@ -97,9 +96,6 @@ def start_menu(screen):
         if exit_button.draw(screen):
             print('EXIT')
             pygame.quit()
-        if tmp_button.draw(screen):
-            print('TEMPORARY')
-            game_over_scene.render(screen)
         
         for event in pygame.event.get():
             #Quit Game
@@ -194,11 +190,18 @@ def initialize():
                 if cloud.cloud_x <= 0 - SCREEN_WIDTH/6.5:
                     cloud.cloud_x = 1333
                     cloud.cloud_y = random.randint(30, 220)
+
+            #Draw other scenes if applicable
+            global GAME_OVER
+            if GAME_OVER:
+                game_over_scene.render(screen)
             
             #Handle Events/Quitting
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    GAME_OVER = True
                 
             pygame.display.update()        
 

@@ -4,37 +4,44 @@ determining when game over occurs.
 
 import pygame
 
+DARKEN_AMOUNT = 160
+DARKEN_RATE = 1
+
+DARKEN_CURR = 0
+
+def render_text(screen):
+    """Renders "'Game Over' text
+
+    Args:
+        screen (pygame display): Screen to draw on
+    """
+    font = pygame.font.Font('freesansbold.ttf', 32)
+    game_over_disp = font.render("Game Over", True, (255, 255, 255))
+    game_over_rect = game_over_disp.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
+    screen.blit(game_over_disp, game_over_rect)
+
+def render_darken(screen):
+    """Dims screen slowly
+
+    Args:
+        screen (pygame display): Screen to draw on
+    """
+    global DARKEN_CURR
+    print(DARKEN_CURR)
+    darken = pygame.Surface(screen.get_size(), 32)
+
+    darken.set_alpha(DARKEN_CURR)
+    screen.blit(darken, (0, 0))
+
+    if DARKEN_CURR < DARKEN_AMOUNT:
+        DARKEN_CURR += DARKEN_RATE
+
 def render(screen):
     """Draws a gameover overlay.
 
     Args:
         screen (pygame): Screen to draw on.
     """
-    # text
-    font = pygame.font.Font('freesansbold.ttf', 32)
-    game_over_disp = font.render("Game Over", True, (255, 255, 255))
-    game_over_rect = game_over_disp.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
-
-    # screen darken
-    darken = pygame.Surface(screen.get_size(), 32)
-    darken_amount = 10
-    darken_curr = 0
-
-    #Default Game Loop
-    running = True
-    while running:
-        # draw text
-        screen.blit(game_over_disp, game_over_rect)        
-
-        # draw darken
-        darken.set_alpha(darken_curr / 2)
-        if darken_curr < darken_amount:
-            darken_curr += 0.1
-            screen.blit(darken, (0, 0))
-        
-        #Handle Events/Quitting
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-        
-        pygame.display.update()      
+    render_darken(screen)
+    render_text(screen)
+    

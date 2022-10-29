@@ -21,7 +21,7 @@ def convert_times_strength_tuple_to_np_array(expected_times, expected_strengths)
     Returns:
         np.2darray: 2d array with gap timestamps and lengths
     """
-    return np.array([[time, strength] for time, strength in zip(expected_times, expected_strengths)])
+    return np.array([[time / 1000, strength] for time, strength in zip(expected_times, expected_strengths)])
 
 def test_generate_level():
     load_path = os.path.join("tests", "test_file.wav")
@@ -30,6 +30,7 @@ def test_generate_level():
     actual = level_generator.generate_level(load_path, beat_type=0, min_onset_strength=0.3, min_onset_gap=0.75)
     expected_times, expected_strengths = audio_analysis.get_beat_info(load_path, beat_type=0, min_onset_strength=0.3, min_onset_gap=0.75)
     expected = convert_times_strength_tuple_to_np_array(expected_times, expected_strengths)
+    print(expected, actual)
     assert (expected == actual).all()
 
     # beat_type = 1
