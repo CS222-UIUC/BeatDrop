@@ -65,7 +65,26 @@ def test_platforms():
     assert platform2.get_y() == SCREEN_HEIGHT - Platform.HEIGHT
     assert platform1.get_width() == 100
     assert platform2.get_width() == 200
+    assert platform1.get_end_x() == 100
+    assert platform2.get_end_x() == 300
     assert platform1.move_left(10) == -10
     assert platform1.get_x() == -10
     assert platform2.move_left(-10) == 110
     assert platform2.get_x() == 110
+
+def test_platform_controller():
+    pc = PlatformController('./tests/test_gaps_file.npy')
+    platforms = pc.platforms
+    assert pc.last_update_time == 0
+    assert pc.finished == False
+    assert len(platforms) == 4
+    assert platforms[0].get_x() == 0
+    pc.start_timer()
+    time.sleep(1)
+    pc.update()
+    assert pc.last_update_time > 0
+    assert len(pc.platforms) < 4
+    pc.stop_timer()
+    assert pc.finished == True
+    
+    
