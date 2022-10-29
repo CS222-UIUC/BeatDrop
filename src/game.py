@@ -6,6 +6,7 @@
 #pylint: disable=wrong-import-position
 #pylint: disable=import-error
 #pylint: disable=unused-variable
+#pylint: disable=global-statement
 #pylint: disable=too-many-branches
 #pylint: disable=too-many-statements
 import random
