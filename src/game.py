@@ -6,6 +6,7 @@
 #pylint: disable=wrong-import-position
 #pylint: disable=import-error
 #pylint: disable=unused-variable
+#pylint: disable=global-statement
 #pylint: disable=too-many-branches
 #pylint: disable=too-many-statements
 import random
@@ -14,6 +15,7 @@ import pygame
 
 from pygame import mixer
 sys.path.insert(1, '..//course-project-group-84//src')
+import game_over_scene
 import score
 
 SCREEN_WIDTH = 1333
@@ -23,6 +25,9 @@ RED   = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE  = (0, 0, 255)
 COLOR_LIST = [RED, GREEN, BLUE]
+
+# States
+GAME_OVER = False
 
 #Class Button
 class Button():
@@ -78,10 +83,10 @@ def start_menu(screen):
     start_img = pygame.image.load('assets/start.png').convert_alpha()
     exit_img = pygame.image.load('assets/exit.png').convert_alpha()
     start_button = Button(SCREEN_WIDTH/2 - 150, SCREEN_HEIGHT/2 - 60, start_img, 0.25)
-    exit_button = Button(SCREEN_WIDTH/2 - 130, SCREEN_HEIGHT/2 + 100, exit_img, 0.22)   
+    exit_button = Button(SCREEN_WIDTH/2 - 130, SCREEN_HEIGHT/2 + 100, exit_img, 0.22)
     icon = pygame.image.load('assets/gameicon.png')
     icon_load = pygame.transform.scale(icon, (SCREEN_WIDTH/5, SCREEN_HEIGHT/2.5))
-    
+
     start_game = False
     while start_game is False:
         screen.fill((202, 228, 241))
@@ -164,7 +169,7 @@ def initialize():
             if flash is False:
                 score_val += 1
             score_disp = font.render("Score: " + str(score_val), True, (255, 255, 255))
-            screen.blit(score_disp, (text_x, test_y))            
+            screen.blit(score_disp, (text_x, test_y))
             if score_val % 1000 == 0:
                 flash = True
                 if color_index == 2:
@@ -186,11 +191,18 @@ def initialize():
                 if cloud.cloud_x <= 0 - SCREEN_WIDTH/6.5:
                     cloud.cloud_x = 1333
                     cloud.cloud_y = random.randint(30, 220)
+
+            #Draw other scenes if applicable
+            global GAME_OVER
+            if GAME_OVER:
+                game_over_scene.render(screen)
             
             #Handle Events/Quitting
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    GAME_OVER = True
                 
             pygame.display.update()        
 
