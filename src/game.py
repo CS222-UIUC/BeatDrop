@@ -17,6 +17,8 @@ from pygame import mixer
 sys.path.insert(1, '..//course-project-group-84//src')
 import game_over_scene
 import score
+import level_generator
+import platforms
 
 SCREEN_WIDTH = 1333
 SCREEN_HEIGHT = 533
@@ -56,7 +58,6 @@ class Button():
 
         #Draw button
         screen.blit(self.image, (self.rect.x, self.rect.y))
-        
         return action
 
 #Class Cloud
@@ -120,7 +121,7 @@ def initialize():
     background = pygame.transform.scale(picture, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
     #Create Background Music
-    mixer.music.load('assets/sample_audio_files/righteous.ogg')
+    mixer.music.load('assets/sample_audio_files/break_free_cut.ogg')
     
     #Title and Icon
     pygame.display.set_caption("BeatDrop")
@@ -138,23 +139,32 @@ def initialize():
     
     #Score
     score_one = score.Score()
-    score_val = score_one.get_score()
     font = pygame.font.Font('freesansbold.ttf', 32)
     text_x = 10
     test_y = 10
-    flash = False
     color_index = 0
+    flash = False
+    
+    #Generate Level
+    level = level_generator.generate_level(load_path = 
+                                           'assets/sample_audio_files/break_free_cut.ogg',
+                                           save_path='assets/level.npy')
+    
+    #Platforms
+    platform_controller = platforms.PlatformController(gaps_filepath='assets/level.npy')
     
     #Default Game Loop
     running = True
     start_music = True
     if start_menu(screen):
+        score_one.start_timer()
+        platform_controller.start_timer()
         while running:
             #Start Music
             if start_music:
                 mixer.music.play(-1)
                 start_music = False
-            
+                
             #Clock/Time
             clock = pygame.time.get_ticks() 
             
@@ -166,25 +176,27 @@ def initialize():
                     running = False
             
             #Update and Display Score
-            if flash is False:
-                score_val += 1
-            score_disp = font.render("Score: " + str(score_val), True, (255, 255, 255))
+            score_disp = font.render("Score: " + str(score_one.get_score()), True, (255, 255, 255))
             screen.blit(score_disp, (text_x, test_y))
-            if score_val % 1000 == 0:
+            if score_one.get_score() % 10 == 0 and score_one.get_score() != 0:
                 flash = True
                 if color_index == 2:
                     color_index = 0
                     flash = False
-                score_disp = font.render("Score: " + str(score_val), True, COLOR_LIST[color_index])
+                score_disp = font.render("Score: " + str(score_one.get_score()),
+                                         True, COLOR_LIST[color_index])
                 screen.blit(score_disp, (text_x, test_y))
                 color_index += 1
-                
-
+            
             #Update Cloud Graphics/Position
             copy = list_of_clouds.copy()
             for cloud in copy:
                 screen.blit(cloud.cloud, (cloud.cloud_x, cloud.cloud_y))
 
+            #Update Platform Graphics/Position
+            platform_controller.update()
+            platform_controller.draw(screen)
+            
             #Change Cloud X Position and Check if Cloud is Off Screen
             for cloud in copy:
                 cloud.move_left()
