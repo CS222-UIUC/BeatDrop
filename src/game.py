@@ -142,8 +142,8 @@ def initialize():
     font = pygame.font.Font('freesansbold.ttf', 32)
     text_x = 10
     test_y = 10
-    flash = False
     color_index = 0
+    flash = False
     
     #Generate Level
     level = level_generator.generate_level(load_path = 
