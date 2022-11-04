@@ -81,26 +81,6 @@ def main():
 
     clock = pygame.time.Clock()
 
-    # running = True
-    # jumping = 0
-    # jumping_counter = 0
-    # while running:
-    #     for event in pygame.event.get():
-    #         if event.type == pygame.QUIT:
-    #             running = False
-    #     keys = pygame.key.get_pressed()
-    #     if keys[pygame.K_SPACE]:
-    #         jumping = True
-    #     if jumping:
-    #         if jumping_counter >= 3:
-    #             dino_sprite.fall()
-    #             jumping = False
-    #             jumping_counter = 0
-    #         else:
-    #             dino_sprite.jump()
-    #             jumping_counter += 1
-    #     else:
-    #         dino_sprite.fall()
     running = True
     while running:
         for event in pygame.event.get():
@@ -108,32 +88,6 @@ def main():
                 running = False
         jump_limit = dino_sprite.ground_lvl - 100
         keys = pygame.key.get_pressed()
-
-        # # toggle jump state
-        # fall_lock = False
-        # if keys[pygame.K_SPACE] and dino_sprite.rect.y >= jump_limit & fall_lock == False:
-        #     dino_sprite.state = "jumping"
-        # else:
-        #     if dino_sprite.rect.y < dino_sprite.ground_lvl:
-        #         dino_sprite.state = "falling"
-        #         fall_lock = True
-        #     else:
-        #         dino_sprite.state = "running"
-
-        # # toggle states based on collisions and other factors
-        # if dino_sprite.state == "jumping":
-        #     # if sprite reaches jump limit, it will start falling
-        #     if dino_sprite.rect.y <= jump_limit:
-        #         dino_sprite.state = "falling"
-        #     else:
-        #         dino_sprite.jump()
-        # elif dino_sprite.state == "falling":
-        #     # if sprite collides with platform, it will stop falling
-        #     if dino_sprite.rect.colliderect(pt1):
-        #         fall_lock = False
-        #         dino_sprite.state = "running"
-        #     else:
-        #         dino_sprite.fall()
 
         # press key , if not fall_lock'ed and within jump_limit -> set state to jump
         # if key is released while in jump state, set state to falling, turn on fall_lock
