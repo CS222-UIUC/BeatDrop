@@ -9,6 +9,7 @@
 #pylint: disable=global-statement
 #pylint: disable=too-many-branches
 #pylint: disable=too-many-statements
+#pylint: disable=too-many-function-args
 import random
 import sys
 import pygame
@@ -59,6 +60,20 @@ class Button():
         #Draw button
         screen.blit(self.image, (self.rect.x, self.rect.y))
         return action
+    
+    @classmethod
+    @staticmethod
+    def draw_exit_button(screen):
+        """Draws an exit button which, upon click, calls quit event.
+
+        Args:
+            screen (pygame.display): Screen to draw on.
+        Returns:
+            bool: If game should quit.
+        """
+        exit_img = pygame.image.load('assets/exit.png').convert_alpha()
+        exit_button = Button(SCREEN_WIDTH/2 - 130, SCREEN_HEIGHT/2 + 100, exit_img, 0.22)
+        return exit_button.draw(screen)
 
 #Class Cloud
 class Cloud:
@@ -82,8 +97,8 @@ def start_menu(screen):
     """Start Menu"""
     #Start and Exit Buttons
     start_img = pygame.image.load('assets/start.png').convert_alpha()
-    exit_img = pygame.image.load('assets/exit.png').convert_alpha()
     start_button = Button(SCREEN_WIDTH/2 - 150, SCREEN_HEIGHT/2 - 60, start_img, 0.25)
+    exit_img = pygame.image.load('assets/exit.png').convert_alpha()
     exit_button = Button(SCREEN_WIDTH/2 - 130, SCREEN_HEIGHT/2 + 100, exit_img, 0.22)
     icon = pygame.image.load('assets/gameicon.png')
     icon_load = pygame.transform.scale(icon, (SCREEN_WIDTH/5, SCREEN_HEIGHT/2.5))
@@ -208,15 +223,21 @@ def initialize():
             global GAME_OVER
             if GAME_OVER:
                 game_over_scene.render(screen)
-            
+                if Button.draw_exit_button(screen):
+                    pygame.quit()
+                    sys.exit()
+                    break
+
             #Handle Events/Quitting
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    print("EXITED 233")
                     running = False
+                    sys.exit(0)
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     GAME_OVER = True
-                
-            pygame.display.update()        
+            
+            pygame.display.update()
 
 def main() :
     """Main Method"""
