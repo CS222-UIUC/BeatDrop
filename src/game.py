@@ -161,9 +161,11 @@ def initialize():
     flash = False
     
     #Generate Level
-    level = level_generator.generate_level(load_path = 
-                                           'assets/sample_audio_files/break_free_cut.ogg',
-                                           save_path='assets/level.npy')
+    # level = level_generator.generate_level(load_path = 
+    #                                        'assets/sample_audio_files/break_free_cut.ogg',
+    #                                        save_path='assets/level.npy',
+    #                                        beat_type=1,
+    #                                        min_onset_gap=3)
     
     #Platforms
     platform_controller = platforms.PlatformController(gaps_filepath='assets/level.npy')
@@ -171,6 +173,7 @@ def initialize():
     #Default Game Loop
     running = True
     start_music = True
+    frames = 0
     if start_menu(screen):
         score_one.start_timer()
         platform_controller.start_timer()
@@ -209,8 +212,11 @@ def initialize():
                 screen.blit(cloud.cloud, (cloud.cloud_x, cloud.cloud_y))
 
             #Update Platform Graphics/Position
-            platform_controller.update()
+            if (frames % 8 == 0):
+                platform_controller.update()
+            # platform_controller.update()
             platform_controller.draw(screen)
+            frames += 1
             
             #Change Cloud X Position and Check if Cloud is Off Screen
             for cloud in copy:

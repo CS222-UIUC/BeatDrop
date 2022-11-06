@@ -57,6 +57,7 @@ class PlatformController:
         self._initialize_platforms(gaps_filepath)
         self.last_update_time = 0
         self.finished = False
+        # print(self.platforms)
 
     def _initialize_platforms(self, gap_filepath):
         """initializes the platforms from the given npy file"""
