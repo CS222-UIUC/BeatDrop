@@ -1,6 +1,7 @@
 """Initialize"""
 #from math import fabs
 # pylint: disable=C0413
+# pylint: disable=E0401
 import sys
 import pygame
 sys.path.insert(1, '..//course-project-group-84//src')
@@ -33,12 +34,24 @@ def main():
 
     clock = pygame.time.Clock()
 
+    pygame.font.init()
+    font = pygame.font.SysFont('Comic Sans MS', 35)
+
+    # text_surface = font.render('A', False, (0,0,0))
+
+    green = (0, 255, 0)
+    blue = (0, 0, 128)
+    text = font.render('Hello', True, green, blue)
+    text_rect = text.get_rect()
+    text_rect.center = (orig.rect.x, orig.rect.y + 200)
+
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
+        screen.blit(text, text_rect)
 
         group.update()
         screen.fill(BACKGROUND_COLOR)
