@@ -10,6 +10,7 @@
 #pylint: disable=too-many-branches
 #pylint: disable=too-many-statements
 #pylint: disable=too-many-function-args
+#pylint: disable=unused-import
 import random
 import sys
 import pygame
@@ -212,7 +213,7 @@ def initialize():
                 screen.blit(cloud.cloud, (cloud.cloud_x, cloud.cloud_y))
 
             #Update Platform Graphics/Position
-            if (frames % 8 == 0):
+            if frames % 8 == 0:
                 platform_controller.update()
             # platform_controller.update()
             platform_controller.draw(screen)

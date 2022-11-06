@@ -1,6 +1,7 @@
 """Initialize"""
 #from math import fabs
 # pylint: disable=C0413
+# pylint: disable=E0401
 import sys
 import pygame
 sys.path.insert(1, '..//course-project-group-84//src')
