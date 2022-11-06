@@ -14,6 +14,7 @@ SCREEN_HEIGHT = 600
 BACKGROUND_COLOR = pygame.Color('pink')
 FPS = 10
 
+
 def main():
     """Initialize the screen"""
     # pylint: disable=R0801
@@ -25,12 +26,12 @@ def main():
     skin1 = DinoSprite()
     group.add(skin1)
     skin1.state = "still"
-    skin1.rect.x = skin1.rect.x + 200
+    skin1.rect.x = skin1.rect.x + 300
 
     skin2 = DinoSprite()
     group.add(skin2)
     skin2.state = "still"
-    skin2.rect.x = skin1.rect.x + 200
+    skin2.rect.x = skin1.rect.x + 300
 
     clock = pygame.time.Clock()
 
@@ -51,9 +52,8 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.blit(text, text_rect)
-
         group.update()
+        screen.blit(text, text_rect)
         screen.fill(BACKGROUND_COLOR)
         group.draw(screen)
         pygame.display.update()
