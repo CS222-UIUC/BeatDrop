@@ -29,10 +29,8 @@ class DinoSprite(pygame.sprite.Sprite):
         super().__init__()
         #adding all the images to sprite array
         self.images = []
-        orig_img = pygame.image.load('./assets/dino0.png')
-        self.images.append(pygame.transform.scale(orig_img, (100, 100)))
-        orig_img = pygame.image.load('./assets/dino1.png')
-        self.images.append(pygame.transform.scale(orig_img, (100, 100)))
+        skin_val = 0
+        self.change_skin(skin_val)
 
         #index value to get the image from the array
         self.index = 0
@@ -40,6 +38,23 @@ class DinoSprite(pygame.sprite.Sprite):
 
         # creating a rect at position x,y (45, ground lvl) of size (100,100)
         self.rect = pygame.Rect(45, self.ground_lvl, 100, 100)
+    
+    def change_skin(self, skin):
+        """Change the character's skin"""
+        if skin == 1: # duck skin
+            orig_img = pygame.image.load('./assets/duck0.png')
+            self.images.append(pygame.transform.scale(orig_img, (100, 100)))
+            orig_img = pygame.image.load('./assets/duck1.png')
+            self.images.append(pygame.transform.scale(orig_img, (100, 100)))
+            orig_img = pygame.image.load('./assets/duck2.png')
+            self.images.append(pygame.transform.scale(orig_img, (100, 100)))
+            orig_img = pygame.image.load('./assets/duck3.png')
+            self.images.append(pygame.transform.scale(orig_img, (100, 100)))
+        else: # default skin
+            orig_img = pygame.image.load('./assets/dino0.png')
+            self.images.append(pygame.transform.scale(orig_img, (100, 100)))
+            orig_img = pygame.image.load('./assets/dino1.png')
+            self.images.append(pygame.transform.scale(orig_img, (100, 100)))
 
    
     def update(self):
@@ -123,3 +138,4 @@ def main():
         clock.tick(10)
 if __name__ == "__main__":
     main()
+    

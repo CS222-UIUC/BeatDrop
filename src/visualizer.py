@@ -1,5 +1,4 @@
 """Music visualizer using pygame.
-
 Visualizes music beats using elementary pygame display tools. This file will
 likely be heavily modified or deprecated in favor of more complex features. As
 it stands, it functions as a foreshadowing of the audio-based game mechanics
@@ -13,7 +12,6 @@ import audio_analysis
 
 def play_music(filename, volume):
     """Plays music using pygame's mixer.
-
     Args:
         filename (string): Path to audio file to identify beats from.
         volume (float): Volume level, between 0 and 1 inclusive.
@@ -31,11 +29,9 @@ def play_music(filename, volume):
 
 def prepare_audio(sample_idx, volume=1):
     """Gets audio beat info and plays audio.
-
     Args:
         sample_idx (int): Sample audio file index.
         volume (float): Volume level, between 0 and 1 inclusive.
-
     Returns:
         np.ndarray: Beat times in milliseconds.
     """
@@ -54,10 +50,8 @@ def prepare_audio(sample_idx, volume=1):
 
 def get_current_time(start_ticks):
     """Returns the runtime in seconds since starting main loop.
-
     Args:
         start_ticks (float): Number of ticks at start of main loop.
-
     Returns:
         float: Time progressed since start in seconds.
     """
@@ -65,12 +59,10 @@ def get_current_time(start_ticks):
 
 def next_beat(beat_idx, beat_times, start_ticks):
     """Returns true if the next beat has passed.
-
     Args:
         beat_idx (int): Index of the next beat in beat_times.
         beat_times (np.ndarray): Beat times in milliseconds.
         start_ticks (float): Number of ticks at start of main loop.
-
     Returns:
         bool: Whether or not the next beat has passed.
     """
@@ -81,7 +73,6 @@ def next_beat(beat_idx, beat_times, start_ticks):
 
 def draw_random_color_rect(screen, size):
     """Draws a randomly-colored rectangle in the top-left corner.
-
     Args:
         screen (pygame.display): Surface to draw on.
         size (int): Width/Length of the rectangle.
@@ -93,7 +84,6 @@ def draw_random_color_rect(screen, size):
 
 def main_loop(screen, beat_times):
     """Main loop.
-
     Args:
         screen (pygame.display): Surface to draw on.
         beat_times (np.ndarray): Beat times in milliseconds.
@@ -122,3 +112,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    

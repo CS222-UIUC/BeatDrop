@@ -1,6 +1,7 @@
 """Initialize"""
 #from math import fabs
 # pylint: disable=C0413
+# pylint: disable=E0401
 import sys
 import pygame
 sys.path.insert(1, '..//course-project-group-84//src')
@@ -13,6 +14,7 @@ SCREEN_HEIGHT = 600
 BACKGROUND_COLOR = pygame.Color('pink')
 FPS = 10
 
+
 def main():
     """Initialize the screen"""
     # pylint: disable=R0801
@@ -24,14 +26,25 @@ def main():
     skin1 = DinoSprite()
     group.add(skin1)
     skin1.state = "still"
-    skin1.rect.x = skin1.rect.x + 200
+    skin1.rect.x = skin1.rect.x + 300
 
     skin2 = DinoSprite()
     group.add(skin2)
     skin2.state = "still"
-    skin2.rect.x = skin1.rect.x + 200
+    skin2.rect.x = skin1.rect.x + 300
 
     clock = pygame.time.Clock()
+
+    pygame.font.init()
+    font = pygame.font.SysFont('Comic Sans MS', 35)
+
+    # text_surface = font.render('A', False, (0,0,0))
+
+    green = (0, 255, 0)
+    blue = (0, 0, 128)
+    text = font.render('Hello', True, green, blue)
+    text_rect = text.get_rect()
+    text_rect.center = (orig.rect.x, orig.rect.y + 200)
 
     running = True
     while running:
@@ -39,11 +52,12 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-
         group.update()
+        screen.blit(text, text_rect)
         screen.fill(BACKGROUND_COLOR)
         group.draw(screen)
         pygame.display.update()
         clock.tick(10)
 if __name__ == "__main__":
     main()
+    

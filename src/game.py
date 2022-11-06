@@ -39,8 +39,10 @@ def start_menu(screen):
     #Start and Exit Buttons
     start_img = pygame.image.load('assets/start.png').convert_alpha()
     exit_img = pygame.image.load('assets/exit.png').convert_alpha()
-    start_button = button.Button(SCREEN_WIDTH/2 - 150, SCREEN_HEIGHT/2 - 60, start_img, 0.25,SCREEN_WIDTH, SCREEN_HEIGHT)
-    exit_button = button.Button(SCREEN_WIDTH/2 - 130, SCREEN_HEIGHT/2 + 100, exit_img, 0.22, SCREEN_WIDTH, SCREEN_HEIGHT)
+    start_button = button.Button(SCREEN_WIDTH/2 - 150, SCREEN_HEIGHT/2 - 60, 
+                                 start_img, 0.25,SCREEN_WIDTH, SCREEN_HEIGHT)
+    exit_button = button.Button(SCREEN_WIDTH/2 - 130, SCREEN_HEIGHT/2 + 100,
+                                exit_img, 0.22, SCREEN_WIDTH, SCREEN_HEIGHT)
     icon = pygame.image.load('assets/gameicon.png')
     icon_load = pygame.transform.scale(icon, (SCREEN_WIDTH/5, SCREEN_HEIGHT/2.5))
 

@@ -1,3 +1,14 @@
+"""Import Statements"""
+#pylint: disable=no-member
+#pylint: disable=trailing-whitespace
+#pylint: disable=too-few-public-methods
+#pylint: disable=too-many-locals
+#pylint: disable=wrong-import-position
+#pylint: disable=import-error
+#pylint: disable=unused-variable
+#pylint: disable=global-statement
+#pylint: disable=too-many-branches
+#pylint: disable=too-many-statements
 import random
 import pygame
 
@@ -14,3 +25,4 @@ class Cloud:
     def move_left(self):
         """Move Cloud Left"""
         self.cloud_x -= self.cloud_x_change
+        

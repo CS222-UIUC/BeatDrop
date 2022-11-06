@@ -1,3 +1,15 @@
+"""Import Statements"""
+#pylint: disable=no-member
+#pylint: disable=trailing-whitespace
+#pylint: disable=too-few-public-methods
+#pylint: disable=too-many-locals
+#pylint: disable=wrong-import-position
+#pylint: disable=import-error
+#pylint: disable=unused-variable
+#pylint: disable=global-statement
+#pylint: disable=too-many-branches
+#pylint: disable=too-many-statements
+#pylint: disable=too-many-arguments
 import pygame
 
 #Class Button
@@ -8,23 +20,21 @@ class Button():
                                             (int(screen_width * scale), int(screen_height * scale)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x_pos, y_pos)
-        self.clicked = False
-    
+        self.clicked = False    
     def draw(self, screen):
         """Draw button on screen"""
         action = False
         #Mouse Position
-        pos = pygame.mouse.get_pos()
-        
+        pos = pygame.mouse.get_pos()  
         #Check mouse position and clicked conditions
         if self.rect.collidepoint(pos):
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked is False:
                 self.clicked = True
-                action = True
-                        
+                action = True                  
         if pygame.mouse.get_pressed()[0] == 0:
             self.clicked = False
 
         #Draw button
         screen.blit(self.image, (self.rect.x, self.rect.y))
         return action
+    
