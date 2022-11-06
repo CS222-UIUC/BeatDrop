@@ -48,7 +48,7 @@ class Button():
     #         bool: If game should quit.
     #     """
     #     exit_img = pygame.image.load('assets/exit.png').convert_alpha()
-    #   exit_button = Button(screen.pygame.Surface.get_width()/2 - 130, 
+    #     exit_button = Button(screen.pygame.Surface.get_width()/2 - 130, 
     #                        screen.pygame.Surface.get_height()/2 + 100, 
     #                        exit_img, 0.22, screen.pygame.Surface.get_height(), 
     #                        screen.pygame.Surface.get_width())
