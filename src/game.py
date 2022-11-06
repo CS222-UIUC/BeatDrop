@@ -162,11 +162,11 @@ def initialize():
     flash = False
     
     #Generate Level
-    # level = level_generator.generate_level(load_path = 
-    #                                        'assets/sample_audio_files/break_free_cut.ogg',
-    #                                        save_path='assets/level.npy',
-    #                                        beat_type=1,
-    #                                        min_onset_gap=3)
+    level = level_generator.generate_level(load_path = 
+                                           'assets/sample_audio_files/break_free_cut.ogg',
+                                           save_path='assets/level.npy',
+                                           min_onset_strength=0.3,
+                                           min_onset_gap=0.75)
     
     #Platforms
     platform_controller = platforms.PlatformController(gaps_filepath='assets/level.npy')
@@ -215,8 +215,8 @@ def initialize():
             #Update Platform Graphics/Position
             if frames % 8 == 0:
                 platform_controller.update()
-            # platform_controller.update()
             platform_controller.draw(screen)
+            # platform_controller.update()
             frames += 1
             
             #Change Cloud X Position and Check if Cloud is Off Screen
