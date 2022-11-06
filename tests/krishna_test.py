@@ -5,6 +5,8 @@ sys.path.insert(1, '..//course-project-group-84//src')
 import level_generator
 import platforms
 import game
+import cloud
+import button
 
 @pytest.fixture
 def test_init():
@@ -17,7 +19,7 @@ def test_game_dimensions():
 
 #Testing Cloud Class
 def test_cloud_class():
-    Cloud = game.Cloud()
+    Cloud = cloud.Cloud()
     assert Cloud.cloud.get_width() == game.SCREEN_WIDTH//6.5
     assert Cloud.cloud.get_height() == game.SCREEN_HEIGHT//6.5
     assert Cloud.cloud_y >= 30
