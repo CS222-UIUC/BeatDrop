@@ -46,9 +46,9 @@ def get_gaps(load_path, beat_type, default_beat_strength, min_onset_strength, mi
     # currently runs only with onset beat_type (beat_type = 1)
     beat_times, beat_strengths = audio_analysis.get_beat_info(load_path, beat_type,
         default_beat_strength, min_onset_strength, min_onset_gap)
-    return convert_beats_to_gaps(beat_times, beat_strengths)
+    return convert_beats_to_gaps(beat_times, beat_strengths, min_onset_gap)
 
-def convert_beats_to_gaps(beat_times, beat_strengths):
+def convert_beats_to_gaps(beat_times, beat_strengths, min_onset_gap):
     """Converts beat times to level gaps.
 
     Args:
@@ -60,8 +60,24 @@ def convert_beats_to_gaps(beat_times, beat_strengths):
     gaps = np.array([])
     for time, strength in zip(beat_times, beat_strengths):
         # dummy conversion; to be replaced with something functional with physics engine
-        gaps = np.append(gaps, np.array([time / 1000, strength]))
+        gaps = np.append(gaps, np.array([time,
+                                         onset_strength_to_gap_strength(strength, min_onset_gap)]))
     return gaps.reshape((-1,2))
+
+def onset_strength_to_gap_strength(strength, min_onset_gap):
+    """converts onset strength to gap strength
+
+    Args:
+        strength (float): onset strength
+        min_onset_gap (float): minimum gap length
+
+    Returns:
+        _type_: gap length
+    """
+    gap_strength = min(strength * min_onset_gap, min_onset_gap)
+    if gap_strength < min_onset_gap * 0.5:
+        gap_strength = min_onset_gap * 0.5
+    return gap_strength
 
 def save_to_file(save_path, gaps):
     """Outputs np.array to given directory using built-in numpy save function.

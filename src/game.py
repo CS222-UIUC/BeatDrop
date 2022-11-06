@@ -9,6 +9,8 @@
 #pylint: disable=global-statement
 #pylint: disable=too-many-branches
 #pylint: disable=too-many-statements
+#pylint: disable=too-many-function-args
+#pylint: disable=unused-import
 import random
 import sys
 import pygame
@@ -106,7 +108,9 @@ def initialize():
     #Generate Level
     level = level_generator.generate_level(load_path = 
                                            'assets/sample_audio_files/break_free_cut.ogg',
-                                           save_path='assets/level.npy')
+                                           save_path='assets/level.npy',
+                                           min_onset_strength=0.3,
+                                           min_onset_gap=0.75)
     
     #Platforms
     platform_controller = platforms.PlatformController(gaps_filepath='assets/level.npy')
@@ -114,6 +118,7 @@ def initialize():
     #Default Game Loop
     running = True
     start_music = True
+    frames = 0
     if start_menu(screen):
         score_one.start_timer()
         platform_controller.start_timer()
@@ -152,8 +157,11 @@ def initialize():
                 screen.blit(cloud_obj.cloud, (cloud_obj.cloud_x, cloud_obj.cloud_y))
 
             #Update Platform Graphics/Position
-            platform_controller.update()
+            if frames % 8 == 0:
+                platform_controller.update()
             platform_controller.draw(screen)
+            # platform_controller.update()
+            frames += 1
             
             #Change Cloud X Position and Check if Cloud is Off Screen
             for cloud_obj in copy:
@@ -166,15 +174,21 @@ def initialize():
             global GAME_OVER
             if GAME_OVER:
                 game_over_scene.render(screen)
-            
+                if Button.draw_exit_button(screen):
+                    pygame.quit()
+                    sys.exit()
+                    break
+
             #Handle Events/Quitting
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    print("EXITED 233")
                     running = False
+                    sys.exit(0)
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     GAME_OVER = True
-                
-            pygame.display.update()        
+            
+            pygame.display.update()
 
 def main() :
     """Main Method"""
