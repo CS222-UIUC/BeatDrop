@@ -81,7 +81,7 @@ def initialize():
     background = pygame.transform.scale(picture, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
     #Create Background Music
-    mixer.music.load('assets/sample_audio_files/break_free_cut.ogg')
+    mixer.music.load('assets/sample_audio_files/laugh_now_cry_later.ogg')
     
     #Title and Icon
     pygame.display.set_caption("BeatDrop")
@@ -107,7 +107,7 @@ def initialize():
     
     #Generate Level
     level = level_generator.generate_level(load_path = 
-                                           'assets/sample_audio_files/break_free_cut.ogg',
+                                           'assets/sample_audio_files/laugh_now_cry_later.ogg',
                                            save_path='assets/level.npy',
                                            min_onset_strength=0.3,
                                            min_onset_gap=0.75)

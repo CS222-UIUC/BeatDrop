@@ -19,6 +19,8 @@ class Platform:
             self.width = width
         else:
             self.width = end_x - start_x
+        icon = pygame.image.load('assets/grass platform.png')
+        self.platform_icon = pygame.transform.scale(icon, (self.width, self.HEIGHT))
 
     def get_x(self):
         """returns the x position of the platform"""
@@ -43,13 +45,15 @@ class Platform:
 
     def draw(self, screen):
         """draws the platform on the screen"""
-        pygame.draw.rect(screen, self.COLOR,
-                         (self.get_x(), self.get_y(), self.get_width(), self.HEIGHT))
+        # pygame.draw.rect(screen, self.COLOR,
+        #                  (self.get_x(), self.get_y(), self.get_width(), self.HEIGHT))
+        screen.blit(self.platform_icon, (self.get_x(), self.get_y()))
 
 
 class PlatformController:
     """Class that controls the platforms and deals with platform logic"""
     SECS_PER_CYCLE = 4
+    CHARACTER_X_OFFSET = 100
 
     def __init__(self, gaps_filepath):
         """initializes the platform controller with the given npy file"""
@@ -74,8 +78,8 @@ class PlatformController:
 
     def _create_platform(self, start_time, end_time):
         """creates a platform from start_time to end_time"""
-        start_x = self._convert_time_to_x(start_time)
-        end_x = self._convert_time_to_x(end_time)
+        start_x = self._convert_time_to_x(start_time) + self.CHARACTER_X_OFFSET
+        end_x = self._convert_time_to_x(end_time) + self.CHARACTER_X_OFFSET
         self.platforms.append(Platform(start_x, end_x=end_x))
 
     def draw(self, screen):
