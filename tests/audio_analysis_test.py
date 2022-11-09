@@ -20,14 +20,14 @@ def test_get_beat_info():
     assert (expected_strengths == actual_strengths).all()
 
     # beat_type = 1
-    expected_times, expected_strengths = audio_analysis.get_onset_times(filename, min_onset_strength=0.3, min_onset_gap=0.2)
+    expected_times, expected_strengths = audio_analysis.get_onset_times(filename, min_onset_strength=0.3, min_onset_distance=0.2)
     actual_times, actual_strengths = audio_analysis.get_beat_info(filename, beat_type=1)
     assert (expected_times == actual_times).all()
     assert (expected_strengths == actual_strengths).all()
 
     # beat_type = 2
-    expected_times, expected_strengths = audio_analysis.get_blend_times(filename, default_beat_strength=0.5, min_onset_strength=0.3, min_onset_gap=0.2)
-    actual_times, actual_strengths = audio_analysis.get_beat_info(filename, beat_type=2, default_beat_strength=0.5, min_onset_strength=0.3, min_onset_gap=0.2)
+    expected_times, expected_strengths = audio_analysis.get_blend_times(filename, default_beat_strength=0.5, min_onset_strength=0.3, min_onset_distance=0.2)
+    actual_times, actual_strengths = audio_analysis.get_beat_info(filename, beat_type=2, default_beat_strength=0.5, min_onset_strength=0.3, min_onset_distance=0.2)
     assert (expected_times == actual_times).all()
     assert (expected_strengths == actual_strengths).all()
 
@@ -112,20 +112,20 @@ def test_filter_by_strength():
 
 def test_filter_by_time():
     times = np.array([1, 2, 2.1, 2.2, 2.3, 3, 3])
-    min_onset_gap = 1
+    min_onset_distance = 1
     expected = np.array([1, 2, 3])
     
-    actual = audio_analysis.filter_by_time(times, min_onset_gap)
-    print(times, min_onset_gap, expected, actual)
+    actual = audio_analysis.filter_by_time(times, min_onset_distance)
+    print(times, min_onset_distance, expected, actual)
     assert (actual.size == expected.size)
     assert (actual == expected).all()
 
 def test_filter_by_time_zero():
     times = np.array([0, 1, 2, 2.1, 2.2, 2.3, 3, 3])
-    min_onset_gap = 1
+    min_onset_distance = 1
 
     with pytest.raises(Exception):
-        audio_analysis.filter_by_time(times, min_onset_gap)
+        audio_analysis.filter_by_time(times, min_onset_distance)
 
 def test_blend_beat_onset_times():
     beat_times = np.array([i for i in range(1,5)])

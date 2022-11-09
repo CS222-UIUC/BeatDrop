@@ -27,21 +27,21 @@
 #     load_path = os.path.join("tests", "test_file.wav")
 
 #     # beat_type = 0
-#     actual = level_generator.generate_level(load_path, beat_type=0, min_onset_strength=0.3, min_onset_gap=0.75)
-#     expected_times, expected_strengths = audio_analysis.get_beat_info(load_path, beat_type=0, min_onset_strength=0.3, min_onset_gap=0.75)
+#     actual = level_generator.generate_level(load_path, beat_type=0, min_onset_strength=0.3, min_onset_distance=0.75)
+#     expected_times, expected_strengths = audio_analysis.get_beat_info(load_path, beat_type=0, min_onset_strength=0.3, min_onset_distance=0.75)
 #     expected = convert_times_strength_tuple_to_np_array(expected_times, expected_strengths)
 #     print(expected, actual)
 #     assert (expected == actual).all()
 
 #     # beat_type = 1
-#     actual = level_generator.generate_level(load_path, beat_type=1, min_onset_strength=0.3, min_onset_gap=0.75)
-#     expected_times, expected_strengths = audio_analysis.get_beat_info(load_path, beat_type=1, min_onset_strength=0.3, min_onset_gap=0.75)
+#     actual = level_generator.generate_level(load_path, beat_type=1, min_onset_strength=0.3, min_onset_distance=0.75)
+#     expected_times, expected_strengths = audio_analysis.get_beat_info(load_path, beat_type=1, min_onset_strength=0.3, min_onset_distance=0.75)
 #     expected = convert_times_strength_tuple_to_np_array(expected_times, expected_strengths)
 #     assert (expected == actual).all()
 
 #     # beat_type = 2
-#     actual = level_generator.generate_level(load_path, beat_type=2, min_onset_strength=0.3, min_onset_gap=0.75)
-#     expected_times, expected_strengths = audio_analysis.get_beat_info(load_path, beat_type=2, min_onset_strength=0.3, min_onset_gap=0.75)
+#     actual = level_generator.generate_level(load_path, beat_type=2, min_onset_strength=0.3, min_onset_distance=0.75)
+#     expected_times, expected_strengths = audio_analysis.get_beat_info(load_path, beat_type=2, min_onset_strength=0.3, min_onset_distance=0.75)
 #     expected = convert_times_strength_tuple_to_np_array(expected_times, expected_strengths)
 #     assert (expected == actual).all()
 

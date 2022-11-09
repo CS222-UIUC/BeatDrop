@@ -7,8 +7,13 @@ import matplotlib.pyplot as plt
 
 import audio_analysis
 
+# constants
+GAP_STRENGTH_MULTIPLIER = 0.5
+MAX_GAP_LENGTH = 0.25
+MIN_GAP_LENGTH = 0.05
+
 def generate_level(load_path, save_path="", beat_type=2, min_onset_strength=0.3,
-    min_onset_gap=0.75):
+    min_onset_distance=0.75):
     """Generates level and outputs to file.
 
     Args:
@@ -19,18 +24,18 @@ def generate_level(load_path, save_path="", beat_type=2, min_onset_strength=0.3,
             Will be ignored if not using beats or blended.
         min_onset_strength (float, optional): Defaults to 0.3.
             Minimum onset strength to be considered for a gap.
-        min_onset_gap (float, optional): Defaults to 0.75.
+        min_onset_distance (float, optional): Defaults to 0.75.
             Minimum time between gaps.
     Returns:
         np.ndarray: 2d array with gap timestamps in seconds and lengths
     """
     default_beat_strength = 0.5
-    gaps = get_gaps(load_path, beat_type, default_beat_strength, min_onset_strength, min_onset_gap)
+    gaps = get_gaps(load_path, beat_type, default_beat_strength, min_onset_strength, min_onset_distance)
     if save_path != "":
         save_to_file(save_path, gaps)
     return gaps
 
-def get_gaps(load_path, beat_type, default_beat_strength, min_onset_strength, min_onset_gap):
+def get_gaps(load_path, beat_type, default_beat_strength, min_onset_strength, min_onset_distance):
     """Get gaps for each platform from given audio file filename.
 
     Args:
@@ -39,16 +44,15 @@ def get_gaps(load_path, beat_type, default_beat_strength, min_onset_strength, mi
         default_beat_strength (float, optional): Beat strength for non-onset beats. Defaults to 0.5.
             Will be ignored if not using beats or blended.
         min_onset_strength (float, optional): Minimum onset strength to be considered for a gap.
-        min_onset_gap (float, optional): Minimum time between gaps.
+        min_onset_distance (float, optional): Minimum time between gaps.
     Returns:
         np.ndarray: 2d array with gap timestamps in seconds and lengths
     """
-    # currently runs only with onset beat_type (beat_type = 1)
     beat_times, beat_strengths = audio_analysis.get_beat_info(load_path, beat_type,
-        default_beat_strength, min_onset_strength, min_onset_gap)
-    return convert_beats_to_gaps(beat_times, beat_strengths, min_onset_gap)
+        default_beat_strength, min_onset_strength, min_onset_distance)
+    return convert_beats_to_gaps(beat_times, beat_strengths, min_onset_distance)
 
-def convert_beats_to_gaps(beat_times, beat_strengths, min_onset_gap):
+def convert_beats_to_gaps(beat_times, beat_strengths, min_onset_distance):
     """Converts beat times to level gaps.
 
     Args:
@@ -61,22 +65,23 @@ def convert_beats_to_gaps(beat_times, beat_strengths, min_onset_gap):
     for time, strength in zip(beat_times, beat_strengths):
         # dummy conversion; to be replaced with something functional with physics engine
         gaps = np.append(gaps, np.array([time,
-                                         onset_strength_to_gap_strength(strength, min_onset_gap)]))
+                                         onset_strength_to_gap_strength(strength, min_onset_distance)]))
     return gaps.reshape((-1,2))
 
-def onset_strength_to_gap_strength(strength, min_onset_gap):
+def onset_strength_to_gap_strength(strength, min_onset_distance):
     """converts onset strength to gap strength
 
     Args:
         strength (float): onset strength
-        min_onset_gap (float): minimum gap length
+        min_onset_distance (float): minimum gap length
 
     Returns:
         _type_: gap length
     """
-    gap_strength = min(strength * min_onset_gap, min_onset_gap)
-    if gap_strength < min_onset_gap * 0.5:
-        gap_strength = min_onset_gap * 0.5
+
+    gap_strength = min(GAP_STRENGTH_MULTIPLIER * strength * min_onset_distance, MAX_GAP_LENGTH)
+    if gap_strength < MIN_GAP_LENGTH:
+        gap_strength = MIN_GAP_LENGTH
     return gap_strength
 
 def save_to_file(save_path, gaps):

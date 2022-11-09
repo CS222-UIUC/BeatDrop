@@ -110,7 +110,7 @@ def initialize():
                                            'assets/sample_audio_files/break_free_cut.ogg',
                                            save_path='assets/level.npy',
                                            min_onset_strength=0.3,
-                                           min_onset_gap=0.75)
+                                           min_onset_distance=0.5)
     
     #Platforms
     platform_controller = platforms.PlatformController(gaps_filepath='assets/level.npy')
