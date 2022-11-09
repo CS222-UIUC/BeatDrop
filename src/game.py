@@ -172,12 +172,12 @@ def initialize():
 
             #Draw other scenes if applicable
             global GAME_OVER
-            # if GAME_OVER:
-            #     game_over_scene.render(screen)
-            #     if button.Button.draw_exit_button(screen):
-            #         pygame.quit()
-            #         sys.exit()
-            #         break
+            if GAME_OVER:
+                game_over_scene.render(screen)
+                if button.Button.draw_exit_button(screen):
+                    pygame.quit()
+                    sys.exit()
+                    break
 
             #Handle Events/Quitting
             for event in pygame.event.get():
