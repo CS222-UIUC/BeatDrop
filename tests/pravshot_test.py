@@ -78,7 +78,7 @@ def test_platform_controller():
     assert pc.last_update_time == 0
     assert pc.finished == False
     assert len(platforms) == 4
-    assert platforms[0].get_x() == 0
+    assert platforms[0].get_x() == pc.CHARACTER_X_OFFSET
     pc.start_timer()
     time.sleep(1)
     pc.update()
