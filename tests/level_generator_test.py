@@ -18,17 +18,17 @@ def test_generate_level():
     actual = level_generator.generate_level(load_path, beat_type=0, min_onset_strength=0.3, min_onset_distance=0.75)
     expected = np.load("tests/tick_0_level.npy")
     print(expected, actual)
-    assert (expected == actual).all()
+    assert (abs(expected - actual) < 0.01).all()
 
     # beat_type = 1
     actual = level_generator.generate_level(load_path, beat_type=1, min_onset_strength=0.3, min_onset_distance=0.75)
     expected = np.load("tests/tick_1_level.npy")
-    assert (expected == actual).all()
+    assert (abs(expected - actual) < 0.01).all()
 
     # beat_type = 2
     actual = level_generator.generate_level(load_path, beat_type=2, min_onset_strength=0.3, min_onset_distance=0.75)
     expected = np.load("tests/tick_2_level.npy")
-    assert (expected == actual).all()
+    assert (abs(expected - actual) < 0.01).all()
 
 def test_visualize_gaps():
     gaps = zip([0], [1])
