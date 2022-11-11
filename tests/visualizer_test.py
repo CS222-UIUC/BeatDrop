@@ -52,11 +52,11 @@ def test_next_beat():
     beat_times = [0.012]
     start_ticks = pygame.time.get_ticks()
 
-    pygame.time.wait(10)
+    pygame.time.wait(8)
     print("44", visualizer.get_current_time(start_ticks))
     assert visualizer.next_beat(beat_idx, beat_times, start_ticks) == False
 
-    pygame.time.wait(3)
+    pygame.time.wait(8)
     print("48", visualizer.get_current_time(start_ticks))
     assert visualizer.next_beat(beat_idx, beat_times, start_ticks) == True
 

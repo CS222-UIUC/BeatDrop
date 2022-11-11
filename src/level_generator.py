@@ -30,7 +30,8 @@ def generate_level(load_path, save_path="", beat_type=2, min_onset_strength=0.3,
         np.ndarray: 2d array with gap timestamps in seconds and lengths
     """
     default_beat_strength = 0.5
-    gaps = get_gaps(load_path, beat_type, default_beat_strength, min_onset_strength, min_onset_distance)
+    gaps = get_gaps(load_path, beat_type, default_beat_strength, min_onset_strength,
+        min_onset_distance)
     if save_path != "":
         save_to_file(save_path, gaps)
     return gaps
@@ -64,8 +65,8 @@ def convert_beats_to_gaps(beat_times, beat_strengths, min_onset_distance):
     gaps = np.array([])
     for time, strength in zip(beat_times, beat_strengths):
         # dummy conversion; to be replaced with something functional with physics engine
-        gaps = np.append(gaps, np.array([time,
-                                         onset_strength_to_gap_strength(strength, min_onset_distance)]))
+        gaps = np.append(gaps,
+            np.array([time, onset_strength_to_gap_strength(strength, min_onset_distance)]))
     return gaps.reshape((-1,2))
 
 def onset_strength_to_gap_strength(strength, min_onset_distance):
@@ -80,8 +81,7 @@ def onset_strength_to_gap_strength(strength, min_onset_distance):
     """
 
     gap_strength = min(GAP_STRENGTH_MULTIPLIER * strength * min_onset_distance, MAX_GAP_LENGTH)
-    if gap_strength < MIN_GAP_LENGTH:
-        gap_strength = MIN_GAP_LENGTH
+    gap_strength = max (gap_strength, MIN_GAP_LENGTH)
     return gap_strength
 
 def save_to_file(save_path, gaps):
@@ -109,3 +109,4 @@ def visualize_gaps(gaps):
         gap_start = gap_timestamp + 1*gap_strength
     plt.plot([gap_start, gap_start + 2], [0, 0], color='r')
     return fig, axes
+    

@@ -20,8 +20,8 @@ def get_beat_info(filename, beat_type=2, default_beat_strength=0.5, min_onset_st
             Will be ignored if not using beats or blended.
         min_onset_strength (float, optional): Minimum onset threshold. Will be ignored if not using
             onset.
-        min_onset_distance (float, optional): Minimum gap between onset spikes. Will be ignored if not
-            using onset.
+        min_onset_distance (float, optional): Minimum gap between onset spikes. Will be ignored if
+            not using onset.
 
     Returns:
         np.ndarray: Beat times in milliseconds.
@@ -32,7 +32,8 @@ def get_beat_info(filename, beat_type=2, default_beat_strength=0.5, min_onset_st
     if beat_type == 1:
         return get_onset_times(filename, min_onset_strength, min_onset_distance)
     if beat_type == 2:
-        return get_blend_times(filename, default_beat_strength, min_onset_strength, min_onset_distance)
+        return get_blend_times(filename, default_beat_strength, min_onset_strength,
+                               min_onset_distance)
     raise ValueError(f"{beat_type} is an invalid beat type.")
 
 def open_audio(filename):
@@ -69,7 +70,8 @@ def get_onset_times(filename, min_onset_strength, min_onset_distance):
     Args:
         filename (string): Path to audio file to identify beats from.
         min_onset_strength (float): Minimum onset threshold. Will be ignored if not using onset.
-        min_onset_distance (float): Minimum gap between onset spikes. Will be ignored if not using onset.
+        min_onset_distance (float): Minimum gap between onset spikes. Will be ignored if not using
+            onset.
     Returns:
         np.ndarray: Onset times in milliseconds.
         np.ndarray: Normalized onset strengths.
@@ -88,7 +90,8 @@ def filter_onset_times(times, strength, min_onset_strength, min_onset_distance):
         times (np.ndarray): Array of onset times.
         strength (np.ndarray): Array of corresponding strengths to onset times.
         min_onset_strength (float): Minimum onset threshold. Will be ignored if not using onset.
-        min_onset_distance (float): Minimum gap between onset spikes. Will be ignored if not using onset.
+        min_onset_distance (float): Minimum gap between onset spikes. Will be ignored if not using
+            onset.
     Returns:
         np.ndarray: Filtered onset times in millseconds.
     """
@@ -113,7 +116,8 @@ def filter_by_time(times, min_onset_distance):
 
     Args:
         times (np.ndarray): Array of onset times. Cannot begin with 0.
-        min_onset_distance (float): Minimum gap between onset spikes. Will be ignored if not using onset.
+        min_onset_distance (float): Minimum gap between onset spikes. Will be ignored if not using
+            onset.
     Returns:
         np.ndarray: Time-filtered onset times in millseconds.
     """
@@ -133,7 +137,8 @@ def get_blend_times(filename, default_beat_strength, min_onset_strength, min_ons
         filename (string): Path to audio file to identify beats from.
         default_beat_strength (float): Beat strength for non-onset beats.
         min_onset_strength (float): Minimum onset threshold. Will be ignored if not using onset.
-        min_onset_distance (float): Minimum gap between onset spikes. Will be ignored if not using onset.
+        min_onset_distance (float): Minimum gap between onset spikes. Will be ignored if not using
+            onset.
 
     Returns:
         np.ndarray: Blended times in milliseconds.
@@ -145,7 +150,8 @@ def get_blend_times(filename, default_beat_strength, min_onset_strength, min_ons
     return blend_beat_onset_times(beat_times, beat_strengths, onset_times, onset_strengths,
         min_onset_distance)
 
-def blend_beat_onset_times(beat_times, beat_strengths, onset_times, onset_strengths, min_onset_distance):
+def blend_beat_onset_times(beat_times, beat_strengths, onset_times, onset_strengths,
+    min_onset_distance):
     """Smartly combines beat and onset times.
 
     Args:
@@ -153,7 +159,8 @@ def blend_beat_onset_times(beat_times, beat_strengths, onset_times, onset_streng
         beat_strengths (np.ndarray): Filtered normalized beat strengths.
         onset_times (np.ndarray): Onset times in milliseconds.
         onset_strengths (np.ndarray): Filtered normalized onset strengths.
-        min_onset_distance (float): Minimum gap between onset spikes. Will be ignored if not using onset.
+        min_onset_distance (float): Minimum gap between onset spikes. Will be ignored if not using
+            onset.
 
     Returns:
         np.ndarray: Blended times in milliseconds.
@@ -175,7 +182,8 @@ def filter_beat_times(beat_times, beat_strengths, onset_times, min_onset_distanc
     Args:
         beat_times (np.ndarray): Beat times in milliseconds.
         onset_times (np.ndarray): Onset times in milliseconds.
-        min_onset_distance (float): Minimum gap between onset spikes. Will be ignored if not using onset.
+        min_onset_distance (float): Minimum gap between onset spikes. Will be ignored if not using
+            onset.
     Returns:
         np.ndarray: Filtered beat times in milliseconds.
         np.ndarray: Filtered normalized beat stregnths.
