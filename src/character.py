@@ -6,10 +6,10 @@ import pygame
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-BACKGROUND_COLOR = pygame.Color('white')
+BACKGROUND_COLOR = pygame.Color('black')
 FPS = 10
 INIT_GROUND_LVL = 200
-JUMP_SPEED = 15
+JUMP_SPEED = 25
 
 # class for dino sprite
 class DinoSprite(pygame.sprite.Sprite):
@@ -29,7 +29,7 @@ class DinoSprite(pygame.sprite.Sprite):
         super().__init__()
         #adding all the images to sprite array
         self.images = []
-        skin_val = 0
+        skin_val = 1
         self.change_skin(skin_val)
 
         #index value to get the image from the array
@@ -41,6 +41,7 @@ class DinoSprite(pygame.sprite.Sprite):
     
     def change_skin(self, skin):
         """Change the character's skin"""
+        self.images = []
         if skin == 1: # duck skin
             orig_img = pygame.image.load('./assets/duck0.png')
             self.images.append(pygame.transform.scale(orig_img, (100, 100)))

@@ -11,7 +11,7 @@ from character import DinoSprite
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-BACKGROUND_COLOR = pygame.Color('pink')
+BACKGROUND_COLOR = pygame.Color('black')
 FPS = 10
 
 
@@ -24,6 +24,7 @@ def main():
     orig.state = "still"
 
     skin1 = DinoSprite()
+    skin1.change_skin(1)
     group.add(skin1)
     skin1.state = "still"
     skin1.rect.x = skin1.rect.x + 300
