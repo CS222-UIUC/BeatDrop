@@ -110,7 +110,7 @@ def initialize():
                                            'assets/sample_audio_files/laugh_now_cry_later.ogg',
                                            save_path='assets/level.npy',
                                            min_onset_strength=0.3,
-                                           min_onset_gap=0.75)
+                                           min_onset_distance=0.5)
     
     #Platforms
     platform_controller = platforms.PlatformController(gaps_filepath='assets/level.npy')
@@ -172,12 +172,12 @@ def initialize():
 
             #Draw other scenes if applicable
             global GAME_OVER
-            # if GAME_OVER:
-            #     game_over_scene.render(screen)
-            #     if button.Button.draw_exit_button(screen):
-            #         pygame.quit()
-            #         sys.exit()
-            #         break
+            if GAME_OVER:
+                game_over_scene.render(screen)
+                if button.Button.draw_exit_button(screen):
+                    pygame.quit()
+                    sys.exit()
+                    break
 
             #Handle Events/Quitting
             for event in pygame.event.get():

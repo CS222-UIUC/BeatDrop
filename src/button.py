@@ -38,19 +38,22 @@ class Button():
         screen.blit(self.image, (self.rect.x, self.rect.y))
         return action
     
-    # @classmethod
-    # @staticmethod
-    # def draw_exit_button(screen):
-    #     """Draws an exit button which, upon click, calls quit event.
-    #     Args:
-    #         screen (pygame.display): Screen to draw on.
-    #     Returns:
-    #         bool: If game should quit.
-    #     """
-    #     exit_img = pygame.image.load('assets/exit.png').convert_alpha()
-    #     exit_button = Button(screen.pygame.Surface.get_width()/2 - 130, 
-    #                        screen.pygame.Surface.get_height()/2 + 100, 
-    #                        exit_img, 0.22, screen.pygame.Surface.get_height(), 
-    #                        screen.pygame.Surface.get_width())
-    #     return exit_button.draw(screen)
+    @classmethod
+    @staticmethod
+    def draw_exit_button(screen):
+        """Draws an exit button which, upon click, calls quit event.
+        Args:
+            screen (pygame.display): Screen to draw on.
+        Returns:
+            bool: If game should quit.
+        """
+        exit_img = pygame.image.load('assets/exit.png').convert_alpha()
+        exit_button = Button(screen.get_width()/2 - 150, 
+                             screen.get_height()/2 + 50, 
+                             exit_img,
+                             0.22,
+                             screen.get_width(), 
+                             screen.get_height())
+
+        return exit_button.draw(screen)
     
