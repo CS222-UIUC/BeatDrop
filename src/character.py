@@ -43,13 +43,13 @@ class DinoSprite(pygame.sprite.Sprite):
         """Change the character's skin"""
         self.images = []
         if skin == 1: # duck skin
+            orig_img = pygame.image.load('./assets/duck3.png')
+            self.images.append(pygame.transform.scale(orig_img, (100, 100)))
             orig_img = pygame.image.load('./assets/duck0.png')
             self.images.append(pygame.transform.scale(orig_img, (100, 100)))
             orig_img = pygame.image.load('./assets/duck1.png')
             self.images.append(pygame.transform.scale(orig_img, (100, 100)))
             orig_img = pygame.image.load('./assets/duck2.png')
-            self.images.append(pygame.transform.scale(orig_img, (100, 100)))
-            orig_img = pygame.image.load('./assets/duck3.png')
             self.images.append(pygame.transform.scale(orig_img, (100, 100)))
         else: # default skin
             orig_img = pygame.image.load('./assets/dino0.png')
