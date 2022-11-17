@@ -10,6 +10,7 @@
 #pylint: disable=too-many-branches
 #pylint: disable=too-many-statements
 #pylint: disable=too-many-arguments
+#pylint: disable=bad-classmethod-argument
 import pygame
 
 #Class Button

@@ -11,18 +11,21 @@
 #pylint: disable=too-many-statements
 #pylint: disable=too-many-function-args
 #pylint: disable=unused-import
+#pylint: disable=R1703
+
 import random
 import sys
-import pygame
 
+import pygame
 from pygame import mixer
+
 sys.path.insert(1, '..//course-project-group-84//src')
+import button
+import cloud
 import game_over_scene
-import score
 import level_generator
 import platforms
-import cloud
-import button
+import score
 
 #Global Variables
 SCREEN_WIDTH = 1333
@@ -67,6 +70,57 @@ def start_menu(screen):
 
     return start_game
 
+#Choose Song Menu
+def choose_song(screen):
+    """Choose Song Menu"""
+    base_font = pygame.font.Font(None, 32)
+    user_text = ''
+    
+    input_rect = pygame.Rect(200, 200, 140, 32)
+    
+    color_active = pygame.Color('purple')
+    
+    color_passive = pygame.Color('gray15')
+    color = color_passive
+    
+    active = False
+    
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if input_rect.collidepoint(event.pos):
+                    active = True
+                else:
+                    active = False
+    
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    user_text = user_text[:-1]
+                else:
+                    user_text += event.unicode
+        
+        screen.fill((0, 128, 255))
+    
+        if active:
+            color = color_active
+        else:
+            color = color_passive
+            
+        pygame.draw.rect(screen, color, input_rect)
+    
+        text_surface = base_font.render(user_text, True, (255, 255, 255))
+        
+        screen.blit(text_surface, (input_rect.x+SCREEN_WIDTH/4, input_rect.y+SCREEN_HEIGHT/4))
+        
+        input_rect.w = max(100, text_surface.get_width()+10)
+        
+        pygame.display.flip()
+        
+    return True
+
 #Initialize Pygame
 def initialize():
     """Initialize Method"""
@@ -80,8 +134,11 @@ def initialize():
     picture = pygame.image.load('assets/background.jpg')
     background = pygame.transform.scale(picture, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    #Create Background Music
+    #Create Background Music and Sound Effects
     mixer.music.load('assets/sample_audio_files/laugh_now_cry_later.ogg')
+    mixer.music.set_volume(0.5)
+    score_sound = mixer.Sound('assets/sample_audio_files/score.ogg')
+    score_sound.set_volume(0.25)
     
     #Title and Icon
     pygame.display.set_caption("BeatDrop")
@@ -107,7 +164,7 @@ def initialize():
     
     #Generate Level
     level = level_generator.generate_level(load_path = 
-                                           'assets/sample_audio_files/laugh_now_cry_later.ogg',
+                                           'assets/sample_audio_files/break_free_cut.ogg',
                                            save_path='assets/level.npy',
                                            min_onset_strength=0.3,
                                            min_onset_distance=0.5)
@@ -119,6 +176,7 @@ def initialize():
     running = True
     start_music = True
     frames = 0
+    #choose_song(screen)
     if start_menu(screen):
         score_one.start_timer()
         platform_controller.start_timer()
@@ -142,6 +200,7 @@ def initialize():
             score_disp = font.render("Score: " + str(score_one.get_score()), True, (255, 255, 255))
             screen.blit(score_disp, (text_x, test_y))
             if score_one.get_score() % 10 == 0 and score_one.get_score() != 0:
+                pygame.mixer.Sound.play(score_sound)
                 flash = True
                 if color_index == 2:
                     color_index = 0
