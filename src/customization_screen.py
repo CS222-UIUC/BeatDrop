@@ -61,10 +61,10 @@ def customization():
     running = True
     while running:
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN and event.key in CUSTOMIZATION_KEY_OPTIONS.keys():
+            if event.type == pygame.KEYDOWN and event.key in CUSTOMIZATION_KEY_OPTIONS:
                 running = False
-                if (CUSTOMIZATION_KEY_OPTIONS[event.key] == "QUIT"):
-                    pygame.quit
+                if CUSTOMIZATION_KEY_OPTIONS[event.key] == "QUIT":
+                    pygame.quit()
                 return CUSTOMIZATION_KEY_OPTIONS[event.key]
             if event.type == pygame.QUIT:
                 running = False
