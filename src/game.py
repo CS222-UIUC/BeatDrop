@@ -21,6 +21,7 @@ from pygame import mixer
 
 sys.path.insert(1, '..//course-project-group-84//src')
 import button
+import customization_screen
 import cloud
 import game_over_scene
 import level_generator
@@ -178,6 +179,11 @@ def initialize():
     frames = 0
     #choose_song(screen)
     if start_menu(screen):
+        _choice = customization_screen.customization() # do something with choice
+        if _choice == "QUIT":
+            return
+            
+        # game loop
         score_one.start_timer()
         platform_controller.start_timer()
         while running:

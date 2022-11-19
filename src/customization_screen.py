@@ -10,11 +10,17 @@ from character import DinoSprite
 # pylint: disable=E1101
 
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1333
+SCREEN_HEIGHT = 533
 BACKGROUND_COLOR = pygame.Color('black')
 FPS = 10
 
+CUSTOMIZATION_KEY_OPTIONS = {
+  pygame.K_q: "Q",
+  pygame.K_w: "W",
+  pygame.K_e: "E",
+  pygame.K_ESCAPE: "QUIT"
+}
 
 def customization():
     """Create the Character Customization Screen"""
@@ -55,8 +61,14 @@ def customization():
     running = True
     while running:
         for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key in CUSTOMIZATION_KEY_OPTIONS:
+                running = False
+                if CUSTOMIZATION_KEY_OPTIONS[event.key] == "QUIT":
+                    pygame.quit()
+                return CUSTOMIZATION_KEY_OPTIONS[event.key]
             if event.type == pygame.QUIT:
                 running = False
+                return CUSTOMIZATION_KEY_OPTIONS[pygame.K_ESCAPE]
         # keys = pygame.key.get_pressed()
         # if keys[pygame.K_e]:
         #     screen.blit()
