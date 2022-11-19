@@ -171,7 +171,7 @@ def initialize():
                                            min_onset_distance=0.5)
     
     #Platforms
-    platform_controller = platforms.PlatformController(gaps_filepath='assets/level.npy')
+    platform_controller = platforms.PlatformController(gaps_filepath='assets/level1.npy')
     
     #Default Game Loop
     running = True
