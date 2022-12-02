@@ -1,5 +1,8 @@
-"""Visual tools for a game over screen. Note that this class is only for drawing the screen, not
-determining when game over occurs.
+"""Visual tools for a quit screen. Note that this class is only for drawing the screen, not
+determining when the scene should be drawn.
+
+Provides functionality for drawing any text and a "QUIT" button beneath it. Has default functions
+for game over and victory.
 """
 #pylint: disable=global-statement
 import pygame
