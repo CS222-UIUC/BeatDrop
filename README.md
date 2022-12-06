@@ -26,7 +26,7 @@ Gameplay involves all aspects related to actual gameplay such as character movem
 pip install numpy pygame librosa soundfile matplotlib
 ```
 3. Use python to run the file `game.py`
-4. Add additional songs of your choice `/assets` as an `.ogg` or `.wav` file.
+4. Add additional songs of your choice in `/assets` as an `.ogg` or `.wav` file.
 
 # Group Members
 - Jonathan Gao (Audio Analysis, Level Generation, Victory/Game Over)
