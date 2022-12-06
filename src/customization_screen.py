@@ -12,7 +12,7 @@ from character import DinoSprite
 
 SCREEN_WIDTH = 1333
 SCREEN_HEIGHT = 533
-BACKGROUND_COLOR = pygame.Color('black')
+BACKGROUND_COLOR = (202, 228, 241)
 FPS = 10
 
 CUSTOMIZATION_KEY_OPTIONS = {
