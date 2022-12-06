@@ -27,6 +27,7 @@ import quit_scene
 import level_generator
 import platforms
 import score
+import character
 
 #Global Variables
 SCREEN_WIDTH = 1333
@@ -186,6 +187,11 @@ def initialize():
         # game loop
         score_one.start_timer()
         platform_controller.start_timer()
+        # initialize character
+        character = DinoSprite()
+        # update character skin to user's choice
+        # character.change_skin(_choice)
+        sprite_group = pygame.sprite.Group(character)
         while running:
             #Start Music
             if start_music:
