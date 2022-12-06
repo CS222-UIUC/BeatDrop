@@ -3,7 +3,7 @@
 import pygame
 # pylint: disable=no-member
 # pylint: disable=R0903
-
+# pylint: disable=W0612
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 BACKGROUND_COLOR = pygame.Color('black')
