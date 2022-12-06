@@ -23,7 +23,7 @@ sys.path.insert(1, '..//course-project-group-84//src')
 import button
 import customization_screen
 import cloud
-import game_over_scene
+import quit_scene
 import level_generator
 import platforms
 import score
@@ -137,7 +137,7 @@ def initialize():
     background = pygame.transform.scale(picture, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
     #Create Background Music and Sound Effects
-    mixer.music.load('assets/sample_audio_files/laugh_now_cry_later.ogg')
+    mixer.music.load('assets/sample_audio_files/tick.wav')
     mixer.music.set_volume(0.5)
     score_sound = mixer.Sound('assets/sample_audio_files/score.ogg')
     score_sound.set_volume(0.25)
@@ -166,7 +166,7 @@ def initialize():
     
     #Generate Level
     level = level_generator.generate_level(load_path = 
-                                           'assets/sample_audio_files/break_free_cut.ogg',
+                                           'assets/sample_audio_files/tick.wav',
                                            save_path='assets/level.npy',
                                            min_onset_strength=0.3,
                                            min_onset_distance=0.5)
@@ -251,8 +251,14 @@ def initialize():
 
             #Draw other scenes if applicable
             global GAME_OVER
-            if GAME_OVER:
-                game_over_scene.render(screen)
+            if platform_controller.finished:
+                quit_scene.render_win_scene(screen)
+                if button.Button.draw_exit_button(screen):
+                    pygame.quit()
+                    sys.exit()
+                    break
+            elif GAME_OVER:
+                quit_scene.render_game_over_scene(screen)
                 if button.Button.draw_exit_button(screen):
                     pygame.quit()
                     sys.exit()

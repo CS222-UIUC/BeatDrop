@@ -49,6 +49,10 @@ class Platform:
         #                  (self.get_x(), self.get_y(), self.get_width(), self.HEIGHT))
         screen.blit(self.platform_icon, (self.get_x(), self.get_y()))
 
+    def is_within(self, x_coord):
+        """checks if the given x coordinate is within the platform"""
+        return self.x <= x_coord <= self.get_end_x()
+
 
 class PlatformController:
     """Class that controls the platforms and deals with platform logic"""
@@ -117,4 +121,13 @@ class PlatformController:
     def _convert_time_to_x(self, time_stamp):
         """converts time to x position"""
         return int(time_stamp * SCREEN_WIDTH / self.SECS_PER_CYCLE)
+
+    def character_within_platform(self):
+        """checks if the character x-pos is within a platform"""
+        for platform in self.platforms:
+            if platform.get_x() > self.CHARACTER_X_OFFSET:
+                break
+            if platform.is_within(self.CHARACTER_X_OFFSET):
+                return True
+        return False
     
