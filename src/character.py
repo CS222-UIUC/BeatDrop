@@ -11,8 +11,8 @@ FPS = 10
 INIT_GROUND_LVL = 200
 JUMP_SPEED = 25
 
-ACCELERATION = 70
-GRAVITY = 30
+ACCELERATION = 9
+GRAVITY = 2
 
 # class for dino sprite
 class DinoSprite(pygame.sprite.Sprite):
@@ -32,7 +32,7 @@ class DinoSprite(pygame.sprite.Sprite):
         super().__init__()
         #adding all the images to sprite array
         self.images = []
-        skin_val = 1
+        skin_val = "Q"
         self.change_skin(skin_val)
 
         #index value to get the image from the array
@@ -48,15 +48,19 @@ class DinoSprite(pygame.sprite.Sprite):
     def change_skin(self, skin):
         """Change the character's skin"""
         self.images = []
-        if skin == 1: # duck skin
-            orig_img = pygame.image.load('./assets/duck3.png')
-            self.images.append(pygame.transform.scale(orig_img, (100, 100)))
-            orig_img = pygame.image.load('./assets/duck0.png')
-            self.images.append(pygame.transform.scale(orig_img, (100, 100)))
-            orig_img = pygame.image.load('./assets/duck1.png')
-            self.images.append(pygame.transform.scale(orig_img, (100, 100)))
-            orig_img = pygame.image.load('./assets/duck2.png')
-            self.images.append(pygame.transform.scale(orig_img, (100, 100)))
+        if skin == "Q": # duck skin
+            for i in range(20):
+                orig_img = pygame.image.load('./assets/duck3.png')
+                self.images.append(pygame.transform.scale(orig_img, (100, 100)))
+            for i in range(20):
+                orig_img = pygame.image.load('./assets/duck0.png')
+                self.images.append(pygame.transform.scale(orig_img, (100, 100)))
+            for i in range(20):
+                orig_img = pygame.image.load('./assets/duck1.png')
+                self.images.append(pygame.transform.scale(orig_img, (100, 100)))
+            for i in range(20):
+                orig_img = pygame.image.load('./assets/duck2.png')
+                self.images.append(pygame.transform.scale(orig_img, (100, 100)))
         else: # default skin
             orig_img = pygame.image.load('./assets/dino0.png')
             self.images.append(pygame.transform.scale(orig_img, (100, 100)))
@@ -92,7 +96,7 @@ class DinoSprite(pygame.sprite.Sprite):
             self.continuous_jump = 0
             self.update_y(-ACCELERATION)
         elif self.vel_y < 0:
-            self.update_y(-min(self.continuous_jump*ACCELERATION/15, ACCELERATION))
+            self.update_y(-min(self.continuous_jump*ACCELERATION/5, ACCELERATION))
         self.continuous_jump += 1
     
     # functions for jumping up and falling
@@ -138,6 +142,7 @@ def main():
                     # dino_sprite.smooth_jump()
         if pygame.key.get_pressed()[pygame.K_SPACE]:
             dino_sprite.smooth_jump()
+            dino_sprite.state = "jumping"
         # jump_limit = dino_sprite.ground_lvl - 100
         # keys = pygame.key.get_pressed()
 
@@ -146,27 +151,6 @@ def main():
         # # if it touches the platform, set state to running, turn off fall_lock
 
         # if keys[pygame.K_SPACE] and dino_sprite.rect.y > jump_limit and not dino_sprite.fall_lock:
-        #     dino_sprite.state = "jumping"
-        # elif dino_sprite.rect.y <= jump_limit:
-        #     dino_sprite.state = "falling"
-        #     dino_sprite.fall_lock = True
-        # elif (not keys[pygame.K_SPACE] and dino_sprite.state == "jumping"):
-        #     dino_sprite.state = "falling"
-        #     dino_sprite.fall_lock = True
-        # elif dino_sprite.rect.bottom == pt1.rect.top:
-        #     dino_sprite.ground_lvl = dino_sprite.rect.y
-        #     print("touching grass: " + str(dino_sprite.rect.bottom) + " " + str(pt1.rect.top))
-        #     dino_sprite.state = "running"
-        #     dino_sprite.fall_lock = False
-        # elif not dino_sprite.rect.colliderect(pt1):
-        #     print("not")
-        #     dino_sprite.state = "falling"
-        #     dino_sprite.fall_lock = True
-
-        # if dino_sprite.state == "jumping":
-        #     dino_sprite.jump()
-        # if dino_sprite.state == "falling":
-        #     dino_sprite.fall()
 
         group.update()
         screen.fill(BACKGROUND_COLOR)

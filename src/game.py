@@ -27,6 +27,7 @@ import quit_scene
 import level_generator
 import platforms
 import score
+from character import DinoSprite
 
 #Global Variables
 SCREEN_WIDTH = 1333
@@ -179,13 +180,19 @@ def initialize():
     frames = 0
     #choose_song(screen)
     if start_menu(screen):
-        _choice = customization_screen.customization() # do something with choice
-        if _choice == "QUIT":
-            return
+        # _choice = customization_screen.customization() # do something with choice
+        # if _choice == "QUIT":
+        #     return
             
         # game loop
         score_one.start_timer()
         platform_controller.start_timer()
+        # initialize character
+        character = DinoSprite()
+        # update character skin to user's choice
+        # character.change_skin(_choice)
+        sprite_group = pygame.sprite.Group(character)
+            
         while running:
             #Start Music
             if start_music:
@@ -227,6 +234,13 @@ def initialize():
             platform_controller.draw(screen)
             # platform_controller.update()
             frames += 1
+
+            #Update Character
+            if frames % 4 == 0:
+                if pygame.key.get_pressed()[pygame.K_SPACE]:
+                    character.smooth_jump()
+                sprite_group.update()
+            sprite_group.draw(screen)
             
             #Change Cloud X Position and Check if Cloud is Off Screen
             for cloud_obj in copy:
