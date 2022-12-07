@@ -7,7 +7,9 @@
 import time
 import pygame
 import numpy as np
-from game import SCREEN_HEIGHT, SCREEN_WIDTH
+# from game import SCREEN_HEIGHT, SCREEN_WIDTH
+SCREEN_WIDTH = 1333
+SCREEN_HEIGHT = 533
 
 class Platform:
     """Class that defines the platform"""
@@ -37,6 +39,9 @@ class Platform:
     def get_end_x(self):
         """returns the x position of the end of the platform(the right side)"""
         return self.x + self.width
+    def get_top_y(self):
+        """returns the y position of the top of the platform"""
+        return self.get_y() - self.HEIGHT
 
     def move_left(self, x_amount):
         """moves the platform left and returns the new x position"""
@@ -73,7 +78,7 @@ class PlatformController:
         # assume gaps is a N x 2 array where N is the number of gaps
         # first column is start time of gap, second column is time length of gap
         start_time = 0
-        for i in range(len(gaps)):
+        for i in range(2,len(gaps)):
             gap_start_time = gaps[i][0]
             gap_length_time = gaps[i][1]
             self._create_platform(start_time, gap_start_time)
@@ -122,12 +127,18 @@ class PlatformController:
         """converts time to x position"""
         return int(time_stamp * SCREEN_WIDTH / self.SECS_PER_CYCLE)
 
-    def character_within_platform(self):
+    def character_within_platform(self, character):
         """checks if the character x-pos is within a platform"""
         for platform in self.platforms:
             if platform.get_x() > self.CHARACTER_X_OFFSET:
                 break
             if platform.is_within(self.CHARACTER_X_OFFSET):
-                return True
-        return False
+                # if (platform.get_top_y() + 5) > character.rect.bottom or (platform.get_top_y() -5 < character.rect.bottom):
+                character.ground_lvl = platform.get_top_y()
+                # return True
+            else:
+                character.ground_lvl = 500
+        # return False
+
+                    
     

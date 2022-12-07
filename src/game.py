@@ -192,8 +192,9 @@ def initialize():
         # update character skin to user's choice
         # character.change_skin(_choice)
         sprite_group = pygame.sprite.Group(character)
-            
+        
         while running:
+            print("ground level: " + (str)(character.ground_lvl))
             #Start Music
             if start_music:
                 mixer.music.play(-1)
@@ -228,10 +229,21 @@ def initialize():
             for cloud_obj in copy:
                 screen.blit(cloud_obj.cloud, (cloud_obj.cloud_x, cloud_obj.cloud_y))
 
+            global GAME_OVER
+             #Update Character
+            if frames % 4 == 0:
+                if pygame.key.get_pressed()[pygame.K_SPACE]:
+                    character.smooth_jump()
+                sprite_group.update()
+            if not character.alive():
+                GAME_OVER = True
+            sprite_group.draw(screen)
+
             #Update Platform Graphics/Position
             if frames % 8 == 0:
                 platform_controller.update()
             platform_controller.draw(screen)
+            platform_controller.character_within_platform(character)
             # platform_controller.update()
             frames += 1
 
@@ -250,7 +262,7 @@ def initialize():
                     cloud_obj.cloud_y = random.randint(30, 220)
 
             #Draw other scenes if applicable
-            global GAME_OVER
+            
             if platform_controller.finished:
                 quit_scene.render_win_scene(screen)
                 if button.Button.draw_exit_button(screen):
@@ -258,6 +270,8 @@ def initialize():
                     sys.exit()
                     break
             elif GAME_OVER:
+                sprite_group.empty() # UNCOMMENT AFTER TESTING
+
                 quit_scene.render_game_over_scene(screen)
                 if button.Button.draw_exit_button(screen):
                     pygame.quit()

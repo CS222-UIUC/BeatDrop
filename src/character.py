@@ -5,14 +5,14 @@ import pygame
 # pylint: disable=R0903
 
 SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_HEIGH = 600
 BACKGROUND_COLOR = pygame.Color('black')
 FPS = 10
 INIT_GROUND_LVL = 200
 JUMP_SPEED = 25
 
-ACCELERATION = 9
-GRAVITY = 2
+ACCELERATION = 5
+GRAVITY = 3
 
 # class for dino sprite
 class DinoSprite(pygame.sprite.Sprite):
@@ -40,7 +40,7 @@ class DinoSprite(pygame.sprite.Sprite):
         self.image = self.images[self.index]
 
         # creating a rect at position x,y (45, ground lvl) of size (100,100)
-        self.rect = pygame.Rect(45, self.ground_lvl, 100, 100)
+        self.rect = pygame.Rect(100, self.ground_lvl, 100, 100)
         
         self.vel_y = 0
         self.continuous_jump = 0
@@ -105,7 +105,13 @@ class DinoSprite(pygame.sprite.Sprite):
         self.rect.y -= self.jump_speed
     def fall(self):
         """Fall Down"""
-        self.rect.y += self.jump_speed   
+        self.rect.y += self.jump_speed 
+
+    def alive(self):
+        """Check if character is still alive"""  
+        if self.rect.y >= 500:
+            return False
+        return True
 
 class Platform(pygame.sprite.Sprite):
     """Create Platform"""
@@ -119,7 +125,7 @@ def main():
     """Initialize the game"""
     # pylint: disable=R0801
     pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGH))
     dino_sprite = DinoSprite()
     group = pygame.sprite.Group(dino_sprite)
 
