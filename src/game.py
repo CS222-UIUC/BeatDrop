@@ -180,9 +180,9 @@ def initialize():
     frames = 0
     #choose_song(screen)
     if start_menu(screen):
-        _choice = customization_screen.customization() # do something with choice
-        if _choice == "QUIT":
-            return
+        # _choice = customization_screen.customization() # do something with choice
+        # if _choice == "QUIT":
+        #     return
             
         # game loop
         score_one.start_timer()
@@ -246,6 +246,13 @@ def initialize():
             platform_controller.character_within_platform(character)
             # platform_controller.update()
             frames += 1
+
+            #Update Character
+            if frames % 4 == 0:
+                if pygame.key.get_pressed()[pygame.K_SPACE]:
+                    character.smooth_jump()
+                sprite_group.update()
+            sprite_group.draw(screen)
             
             #Change Cloud X Position and Check if Cloud is Off Screen
             for cloud_obj in copy:
